@@ -1,23 +1,20 @@
 package com.example.cooperationproject.filter;
 
-import com.example.cooperationproject.constant.AllowUriContanst;
-import com.example.cooperationproject.service.UidPidService;
-import com.example.cooperationproject.service.UidTidAuidService;
+import com.example.cooperationproject.constant.ConstantFiledUtil;
 import com.example.cooperationproject.utils.MyJwtUtil;
-import com.mysql.cj.util.StringUtils;
+import com.example.cooperationproject.utils.TranslateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.ConfigAttribute;
+import org.springframework.security.access.SecurityConfig;
+import org.springframework.security.core.parameters.P;
 import org.springframework.security.web.FilterInvocation;
 import org.springframework.security.web.access.intercept.FilterInvocationSecurityMetadataSource;
 import org.springframework.stereotype.Component;
 
-import javax.servlet.FilterChain;
-import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Objects;
 
 
 @Component
@@ -27,16 +24,17 @@ public class SecurityFilter implements FilterInvocationSecurityMetadataSource {
     @Autowired
     private MyJwtUtil myJwtUtil;
 
-    @Autowired
-    private UidPidService uidPidService;
 
-    @Autowired
-    private UidTidAuidService uidTidAuidService;
-
-
+    /**
+     * 返回请求的资源需要的角色权限列表
+     * @param object
+     * @return
+     * @throws IllegalArgumentException
+     */
     // 当接收到一个http请求时, filterSecurityInterceptor会调用的方法. 参数object是一个包含url信息的HttpServletRequest实例. 这个方法要返回请求该url所需要的所有权限集合。
     @Override
     public Collection<ConfigAttribute> getAttributes(Object object) throws IllegalArgumentException {
+        // 不可以在这个类中获取request中的body，因为流只能读一次，且这里的object是多个对象的组合
         FilterInvocation filterInvocation = ((FilterInvocation) object);
         HttpServletRequest request = filterInvocation.getHttpRequest();
 
@@ -45,37 +43,32 @@ public class SecurityFilter implements FilterInvocationSecurityMetadataSource {
         // uri : 相对路径 eg: /user/login
         // url : 绝对路径 eg: http://127.0.0.1:3345/user/login
 
+        String authentication = TranslateUtil.UriToAuthentication(requestURI);
 
-        // 如果是白名单中的uri，直接放行
-        List<String> uriList = AllowUriContanst.getUriList();
+        // uri没有匹配的权限，直接往下传，后面的filter会拦截
+        if (authentication == null) return null;
 
-        for (String e : uriList){
-            if (Objects.isNull(requestURI) ||  e.equals(requestURI)){
-                return null;
-            }
+        List<ConfigAttribute> authenticationList = new ArrayList<>();
+
+        // 这个switch可以利用不收到break的特性减少代码行数，但是为了可读性，还是写
+        switch (authentication){
+            case ConstantFiledUtil.USER:
+                // 如果是只需要user的权限，就把所有的权限放进去，表示所有的人都可以访问
+                authenticationList.add(new SecurityConfig(ConstantFiledUtil.USER));
+                authenticationList.add(new SecurityConfig(ConstantFiledUtil.ADMIN));
+                authenticationList.add(new SecurityConfig(ConstantFiledUtil.AUTHOR));
+                break;
+            case ConstantFiledUtil.ADMIN:
+                // 如果是只需要admin的权限，则把admin权限以上的放进去
+                authenticationList.add(new SecurityConfig(ConstantFiledUtil.ADMIN));
+                authenticationList.add(new SecurityConfig(ConstantFiledUtil.AUTHOR));
+                break;
+            case ConstantFiledUtil.AUTHOR:
+                authenticationList.add(new SecurityConfig(ConstantFiledUtil.AUTHOR));
+                break;
         }
 
-        // 到这里，说明request中一定要带token
-        // 如果没带，则说明请求错误，直接返回，会有认证的filter处理
-        String token = request.getHeader("token");
-        if (StringUtils.isNullOrEmpty(token)){
-            return null;
-        }
-
-        // 如果有token，则获取userId
-        int userID = myJwtUtil.getUserIdFromToken(token);
-
-        // 才数据库中获取当前userId所能进行的权限操作
-
-
-
-
-
-        // 不可以在这个类中获取request中的body，因为流只能读一次，且这里的object是多个对象的组合
-
-        // TODO : 对不同身份的用户在url上
-
-        return null;
+        return authenticationList;
     }
 
     // Spring容器启动时自动调用, 一般把所有请求与权限的对应关系也要在这个方法里初始化, 保存在一个属性变量里。

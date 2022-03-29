@@ -15,26 +15,6 @@ import java.util.List;
 import java.util.Map;
 
 @SpringBootTest
-@MapperScan("com.example.cooperationproject.mapper")
-
 public class connectiveTest {
-//    @Autowired
-//    UserMapper userMapper;
-//    @Test
-//    public void testDBConnective(){
-//        List<User> users = userMapper.selectList(null);
-//        System.out.println(users);
-//    }
-//
-//    @Test
-//    public void testToken(){
-//        Map<String,Object> map = new HashMap<>();
-//        map.put("userId","CoderWdd");
-//        map.put("password","123456");
-//        String token = MyJwtUtil.generateToken(map,"CoderWdd");
-//        Claims claims = MyJwtUtil.parseToken(token);
-////        Map<String,Object> claims = (Map<String, Object>) MyJwtUtil.parseToken(token);
-//        System.out.println(claims.get("userId"));
-//        System.out.println(claims.get("password"));
-//    }
+
 }

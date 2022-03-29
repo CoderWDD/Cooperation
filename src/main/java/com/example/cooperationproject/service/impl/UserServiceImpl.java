@@ -2,10 +2,11 @@ package com.example.cooperationproject.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.example.cooperationproject.pojo.User;
+import com.example.cooperationproject.constant.ConstantFiledUtil;
+import com.example.cooperationproject.pojo.*;
 import com.example.cooperationproject.pojo.authentication.LoginUser;
 import com.example.cooperationproject.mapper.UserMapper;
-import com.example.cooperationproject.service.UserService;
+import com.example.cooperationproject.service.*;
 import com.mysql.cj.util.StringUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -14,10 +15,19 @@ import org.springframework.stereotype.Service;
 
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Service
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
+
+    public UserServiceImpl(AuthenticationService authenticationService, UidPidService uidPidService, UidPidAuidService uidPidAuidService, UidTidAuidService uidTidAuidService, TaskItemService taskItemService) {
+        this.authenticationService = authenticationService;
+        this.uidPidService = uidPidService;
+        this.uidPidAuidService = uidPidAuidService;
+        this.uidTidAuidService = uidTidAuidService;
+        this.taskItemService = taskItemService;
+    }
 
     @Override
     public boolean Register(User user) {
@@ -109,6 +119,15 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         return user.getUserName();
     }
 
+    private final AuthenticationService authenticationService;
+
+    private final UidPidService uidPidService;
+
+    private final UidPidAuidService uidPidAuidService;
+
+    private final UidTidAuidService uidTidAuidService;
+
+    private final TaskItemService taskItemService;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -125,10 +144,50 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             throw new UsernameNotFoundException("User not found with username: " + username);
         }
 
-        // TODO ： 添加admin和普通user等的身份认证
-        // 可以尝试将用户的权限信息封装到一个实体类中，然后放进这里
+        // 能跑到这里，说明token一定是合法的，即用户一定存在
+        User curUser = FindUserByUsername(username);
+
+        Integer userId = curUser.getUserId();
+
+        // 获取userId对应的所有的project的权限
+
+        // 设定每个项目中，每个人都只有一种权限，但是范围可以覆盖
+
+//        HashMap<String,String> auMap = new HashMap<>();
+
+        ArrayList<String> auList = new ArrayList<>();
+
+        List<UidPid> uidPidList = uidPidService.GetPidListByUid(userId);
+
+        for (UidPid e : uidPidList){
+
+            int projectId = e.getProjectId();
+            UidPidAuId uidPidAuId = uidPidAuidService.FindUidPidAuidByUidPid(userId, projectId);
+
+            Authentication authentication = authenticationService.GetAuthenticationNameByAuId(uidPidAuId.getAuId());
+            auList.add(ConstantFiledUtil.PROJECT + ":" + projectId + ":" + authentication.getAnName());
+        }
+
+        // 获取userId对应的所有的item的权限
+
+        List<TaskItem> taskItemList = taskItemService.GetTaskItemListByUsername(username);
+
+        for (TaskItem e : taskItemList){
+            int itemId = e.getItemId();
+            UidTidAuid uidTidAuid = uidTidAuidService.FindAuidByUidTid(userId, itemId);
+            int auId = uidTidAuid.getAuId();
+            Authentication authentication = authenticationService.GetAuthenticationNameByAuId(auId);
+//            eg: item:2:user
+//            auMap.put(ConstantFiledUtil.ITEM + ":" + itemId,authentication.getAnName());
+
+            auList.add(ConstantFiledUtil.ITEM + ":" + itemId + ":"+ authentication.getAnName());
+        }
+
+        System.out.println(auList);
+
+        // 将用户的权限信息封装到一个实体类中，然后放进这里
         // 就可以利用SpringSecurity的授权鉴权机制了
-        LoginUser loginUser = new LoginUser(user,new ArrayList<String>());
+        LoginUser loginUser = new LoginUser(user,auList);
         return loginUser;
     }
 }

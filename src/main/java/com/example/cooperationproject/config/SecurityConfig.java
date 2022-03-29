@@ -69,8 +69,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 // 对于登录接口，允许匿名访问
-                .antMatchers("/user/login","/user/register")
-                .anonymous()
+                .antMatchers("/user/login","/user/register").anonymous()
                 // 除了上面外的所有请求全部需要鉴权认证
                 .anyRequest().authenticated()
                 .withObjectPostProcessor(new ObjectPostProcessor<FilterSecurityInterceptor>() {
@@ -91,17 +90,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authenticationEntryPoint(jwtAuthenticationEntryPoint)
                 .accessDeniedHandler(jwtAccessDeniedHandler);
 
-//        // 动态鉴权
-//        ApplicationContext applicationContext = http.getSharedObject(ApplicationContext.class);
-//        http
-//                .apply(new UrlAuthorizationConfigurer<>(applicationContext))
-//                .withObjectPostProcessor(new ObjectPostProcessor<FilterSecurityInterceptor>() {
-//                    @Override
-//                    public <O extends FilterSecurityInterceptor> O postProcess(O object) {
-//                        object.setSecurityMetadataSource(securityFilter);
-//                        return object;
-//                    }
-//                });
 
         // Add a filter to validate the tokens with every request
         http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);

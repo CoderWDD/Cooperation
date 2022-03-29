@@ -2,20 +2,26 @@ package com.example.cooperationproject.constant;
 
 public class ConstantFiledUtil {
 
-    public static String AUTHORIZATION_TOKEN = "token";
+    public static final String AUTHORIZATION_TOKEN = "token";
 
 
-    public static String URI_DELETE = "delete";
+    public static final String URI_DELETE = "delete";
 
-    public static String URI_ADD = "add";
+    public static final String URI_ADD = "add";
 
-    public static String URI_MODIFY = "modify";
+    public static final String URI_MODIFY = "modify";
 
-    public static String URI_SET = "set";
+    public static final String URI_SET = "setStatus";
 
-    public static String PROJECT = "project";
+    public static final String PROJECT = "project";
 
-    public static String ITEM = "item";
+    public static final String ITEM = "item";
 
-    public static String USER = "user";
+    public static final String USER = "user";
+
+    public static final String ADMIN = "admin";
+
+    public static final String AUTHOR = "author";
+
+
 }
