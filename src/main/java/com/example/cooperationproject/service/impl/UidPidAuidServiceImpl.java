@@ -37,4 +37,12 @@ public class UidPidAuidServiceImpl extends ServiceImpl<UidPidAuidMapper, UidPidA
         return uidPidAuId;
     }
 
+    @Override
+    public boolean DeleteUidPidAuid(Integer userId, Integer projectId) {
+        QueryWrapper<UidPidAuId> wrapper = new QueryWrapper<>();
+        wrapper.eq("user_id",userId);
+        wrapper.eq("project_id",projectId);
+        return remove(wrapper);
+    }
+
 }

@@ -8,4 +8,6 @@ public interface UidTidAuidService extends IService<UidTidAuid> {
     boolean InsertUidTidAuid(UidTidAuid uidTidAuid);
 
     UidTidAuid FindAuidByUidTid(Integer userId,Integer itemId);
+
+    boolean DeleteByUIDTID(Integer userId,Integer itemId);
 }

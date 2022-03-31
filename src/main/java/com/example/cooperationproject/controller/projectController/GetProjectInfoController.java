@@ -8,6 +8,7 @@ import com.example.cooperationproject.utils.ResultUtil;
 import com.example.cooperationproject.utils.result.Message;
 import com.example.cooperationproject.utils.result.StatusCode;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -29,30 +30,18 @@ public class GetProjectInfoController {
         this.projectService = projectService;
     }
 
-    @GetMapping("/project/getProjectInfo")
-    public Message getProjectInfo(@RequestBody Project project){
+    @GetMapping("/project/get/{projectId}")
+    public Message getProjectInfo(@PathVariable(value = "projectId") Integer projectId){
         String token = request.getHeader("token");
         String username = myJwtUtil.getUsernameFromToken(token);
 
-        Project findProjectByName = projectService.FindProjectByName(project.getProjectName(), username);
-
-        if (Objects.isNull(findProjectByName)){
-            // 如果根据项目名找不到
-            Project findProjectById = projectService.FindProjectById(project.getProjectId());
-            if (Objects.isNull(findProjectById)){
-                // 如果两种都找不到
-                return ResultUtil.error(StatusCode.BadRequest,"项目信息错误！");
-            }else {
-                // 如果找到
-                if (findProjectById.equals(username)){
-                    // 如果作者名和id匹配
-                    return ResultUtil.success(findProjectById);
-                }else {
-                    return ResultUtil.error(StatusCode.BadRequest,"项目Id出错！");
-                }
-            }
+        Project findProjectById = projectService.FindProjectById(projectId);
+        if (Objects.isNull(findProjectById)){
+            // 如果找不到
+            return ResultUtil.error(StatusCode.BadRequest,"项目ID信息错误！");
+        }else {
+            // 如果找到
+            return ResultUtil.success(findProjectById);
         }
-
-        return ResultUtil.success(findProjectByName);
     }
 }

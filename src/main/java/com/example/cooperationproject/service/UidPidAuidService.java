@@ -8,4 +8,6 @@ public interface UidPidAuidService extends IService<UidPidAuId> {
 
     UidPidAuId FindUidPidAuidByUidPid(Integer userId,Integer projectId);
 
+    boolean DeleteUidPidAuid(Integer userId,Integer projectId);
+
 }

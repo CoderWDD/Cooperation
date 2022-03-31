@@ -1,6 +1,7 @@
 package com.example.cooperationproject.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.example.cooperationproject.entity.NewTaskItem;
 import com.example.cooperationproject.pojo.TaskItem;
 
 import java.util.List;
@@ -12,13 +13,9 @@ public interface ItemService extends IService<TaskItem> {
 
     TaskItem FindItemByName(String itemName,String author,Integer projectId);
 
-    boolean IsItemExciting(Integer taskItemId,String itemName,String author,Integer projectId,String username);
+    boolean DeleteItemById(Integer userId,Integer taskItemId);
 
-    boolean DeleteItemById(Integer taskItemId);
-
-    boolean DeleteItemByName(String itemName,String author,Integer projectId);
-
-    boolean ModifyItemInfo(TaskItem taskItem);
+    boolean ModifyItemInfo(Integer itemId,NewTaskItem newTaskItem);
 
     List<TaskItem> GetItemListByProjectId(Integer projectId);
 

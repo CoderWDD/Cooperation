@@ -23,5 +23,12 @@ public class ConstantFiledUtil {
 
     public static final String AUTHOR = "author";
 
+    public static final Integer AUTHOR_ID = 1;
+
+    public static final Integer ADMIN_ID = 2;
+
+    public static final Integer USER_ID = 3;
+
+
 
 }

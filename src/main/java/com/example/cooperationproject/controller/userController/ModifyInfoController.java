@@ -18,7 +18,7 @@ public class ModifyInfoController {
         this.userService = userService;
     }
 
-    @PostMapping("/user/modifyInfo")
+    @PostMapping("/user/modify")
     public Message modifyInfo(@RequestBody User user){
         boolean res = userService.ModifyInfo(user);
         if (res){

@@ -29,9 +29,6 @@ public class LoginUser implements Serializable, UserDetails {
         this.userPermissions = userPermissions;
     }
 
-
-    // TODO ： 对权限进行更进一步的处理
-
     // 存储SpringSecurity所需要的权限信息的集合
     @JSONField(serialize = false)
     private List<GrantedAuthority> userAuthorities;

@@ -163,9 +163,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
             int projectId = e.getProjectId();
             UidPidAuId uidPidAuId = uidPidAuidService.FindUidPidAuidByUidPid(userId, projectId);
-
-            Authentication authentication = authenticationService.GetAuthenticationNameByAuId(uidPidAuId.getAuId());
-            auList.add(ConstantFiledUtil.PROJECT + ":" + projectId + ":" + authentication.getAnName());
+            if (!Objects.isNull(uidPidAuId)){
+                Authentication authentication = authenticationService.GetAuthenticationNameByAuId(uidPidAuId.getAuId());
+                auList.add(ConstantFiledUtil.PROJECT + ":" + projectId + ":" + authentication.getAnName());
+            }
         }
 
         // 获取userId对应的所有的item的权限
@@ -175,12 +176,16 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         for (TaskItem e : taskItemList){
             int itemId = e.getItemId();
             UidTidAuid uidTidAuid = uidTidAuidService.FindAuidByUidTid(userId, itemId);
-            int auId = uidTidAuid.getAuId();
-            Authentication authentication = authenticationService.GetAuthenticationNameByAuId(auId);
+
+            if (!Objects.isNull(uidTidAuid)){
+                int auId = uidTidAuid.getAuId();
+                Authentication authentication = authenticationService.GetAuthenticationNameByAuId(auId);
 //            eg: item:2:user
 //            auMap.put(ConstantFiledUtil.ITEM + ":" + itemId,authentication.getAnName());
 
-            auList.add(ConstantFiledUtil.ITEM + ":" + itemId + ":"+ authentication.getAnName());
+                auList.add(ConstantFiledUtil.ITEM + ":" + itemId + ":"+ authentication.getAnName());
+            }
+
         }
 
         System.out.println(auList);

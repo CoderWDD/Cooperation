@@ -3,11 +3,16 @@ package com.example.cooperationproject.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.example.cooperationproject.constant.ConstantFiledUtil;
+import com.example.cooperationproject.entity.NewProjectInfo;
 import com.example.cooperationproject.pojo.Project;
 import com.example.cooperationproject.mapper.ProjectMapper;
+import com.example.cooperationproject.pojo.UidPidAuId;
 import com.example.cooperationproject.service.ProjectService;
+import com.example.cooperationproject.service.UidPidAuidService;
 import com.example.cooperationproject.service.UidPidService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
@@ -18,6 +23,9 @@ public class ProjectServiceImpl extends ServiceImpl<ProjectMapper, Project> impl
 
     @Autowired
     private UidPidService uidPidService;
+
+    @Autowired
+    private UidPidAuidService uidPidAuidService;
 
     @Override
     public boolean CreateProject(Project project,Integer userId) {
@@ -44,8 +52,12 @@ public class ProjectServiceImpl extends ServiceImpl<ProjectMapper, Project> impl
             removeById(projectId);
             return false;
         }
+
+        UidPidAuId uidPidAuId = new UidPidAuId(userId,projectId, ConstantFiledUtil.AUTHOR_ID);
+        boolean uidPidAuid = uidPidAuidService.InsertUidPidAuid(uidPidAuId);
+
         // 能运行到了，说明一定成功了
-        return true;
+        return saveSuccessful && insertSuccessful && uidPidAuid;
     }
 
     @Override
@@ -69,7 +81,7 @@ public class ProjectServiceImpl extends ServiceImpl<ProjectMapper, Project> impl
     }
 
     @Override
-    public Project FindProjectByInvitationCode(Integer invitationCode) {
+    public Project FindProjectByInvitationCode(String invitationCode) {
         QueryWrapper<Project> wrapper = new QueryWrapper<>();
 
         wrapper.eq("invitation_code",invitationCode);
@@ -97,7 +109,10 @@ public class ProjectServiceImpl extends ServiceImpl<ProjectMapper, Project> impl
 
         if (removeSuccessful){
             // 如果成功删除了项目，则应该把关联表中的关系也删除
-            return uidPidService.DeleteByUidPid(userId,projectId);
+            uidPidService.DeleteByUidPid(userId,projectId);
+            uidPidAuidService.DeleteUidPidAuid(userId,projectId);
+            // 不考虑删除失败的情况。有时间再来加
+            return true;
         }
         // 跑到这里说明没有全部删除成功
         return false;
@@ -120,21 +135,27 @@ public class ProjectServiceImpl extends ServiceImpl<ProjectMapper, Project> impl
 
         if (removeSuccessful){
             // 如果成功删除了项目，则应该把关联表中的关系也删除
-            return uidPidService.DeleteByUidPid(userId,projectId);
+            uidPidService.DeleteByUidPid(userId,projectId);
+            uidPidAuidService.DeleteUidPidAuid(userId,projectId);
+            return true;
         }
 
-        return true;
+        return false;
     }
 
 
     @Override
-    public boolean ModifyProject(Project project, String username) {
-        UpdateWrapper<Project> wrapper = new UpdateWrapper<>();
+    public boolean ModifyProject(NewProjectInfo newProjectInfo,Integer projectId,String invitationCode, String username) {
 
-        wrapper.eq("project_id",project.getProjectId());
-        wrapper.eq("author",username);
+        Project project = new Project();
+        project.setProjectId(projectId);
+        project.setProjectName(newProjectInfo.getProjectName());
+        project.setProjectTime(newProjectInfo.getProjectTime());
+        project.setDescription(newProjectInfo.getDescription());
+        project.setInvitationCode(invitationCode);
+        project.setStatus(newProjectInfo.getStatus());
 
-        boolean updateSuccessful = update(project, wrapper);
+        boolean updateSuccessful = updateById(project);
 
         return updateSuccessful;
     }

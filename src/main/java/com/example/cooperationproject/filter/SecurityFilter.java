@@ -6,7 +6,6 @@ import com.example.cooperationproject.utils.TranslateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.access.SecurityConfig;
-import org.springframework.security.core.parameters.P;
 import org.springframework.security.web.FilterInvocation;
 import org.springframework.security.web.access.intercept.FilterInvocationSecurityMetadataSource;
 import org.springframework.stereotype.Component;
@@ -50,21 +49,29 @@ public class SecurityFilter implements FilterInvocationSecurityMetadataSource {
 
         List<ConfigAttribute> authenticationList = new ArrayList<>();
 
+        // 将权限包装成 ConstantFiledUtil.ITEM + ":" + itemId + ":"+ authentication.getAnName() 格式
+        String[] strings = authentication.split("/");
+        if (strings.length < 3){
+            return null;
+        }
+        String preString = strings[0] + ":" + strings[2] + ":";
+
+
         // 这个switch可以利用不收到break的特性减少代码行数，但是为了可读性，还是写
         switch (authentication){
             case ConstantFiledUtil.USER:
                 // 如果是只需要user的权限，就把所有的权限放进去，表示所有的人都可以访问
-                authenticationList.add(new SecurityConfig(ConstantFiledUtil.USER));
-                authenticationList.add(new SecurityConfig(ConstantFiledUtil.ADMIN));
-                authenticationList.add(new SecurityConfig(ConstantFiledUtil.AUTHOR));
+                authenticationList.add(new SecurityConfig(preString + ConstantFiledUtil.USER));
+                authenticationList.add(new SecurityConfig(preString + ConstantFiledUtil.ADMIN));
+                authenticationList.add(new SecurityConfig(preString + ConstantFiledUtil.AUTHOR));
                 break;
             case ConstantFiledUtil.ADMIN:
                 // 如果是只需要admin的权限，则把admin权限以上的放进去
-                authenticationList.add(new SecurityConfig(ConstantFiledUtil.ADMIN));
-                authenticationList.add(new SecurityConfig(ConstantFiledUtil.AUTHOR));
+                authenticationList.add(new SecurityConfig(preString + ConstantFiledUtil.ADMIN));
+                authenticationList.add(new SecurityConfig(preString + ConstantFiledUtil.AUTHOR));
                 break;
             case ConstantFiledUtil.AUTHOR:
-                authenticationList.add(new SecurityConfig(ConstantFiledUtil.AUTHOR));
+                authenticationList.add(new SecurityConfig(preString + ConstantFiledUtil.AUTHOR));
                 break;
         }
 

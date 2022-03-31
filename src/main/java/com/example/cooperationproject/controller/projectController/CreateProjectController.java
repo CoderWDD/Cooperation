@@ -3,10 +3,12 @@ package com.example.cooperationproject.controller.projectController;
 
 import com.example.cooperationproject.pojo.Project;
 import com.example.cooperationproject.service.ProjectService;
+import com.example.cooperationproject.service.UidPidService;
 import com.example.cooperationproject.utils.MyJwtUtil;
 import com.example.cooperationproject.utils.ResultUtil;
 import com.example.cooperationproject.utils.result.Message;
 import com.example.cooperationproject.utils.result.StatusCode;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,16 +25,16 @@ public class CreateProjectController {
 
     private final ProjectService projectService;
 
+
     public CreateProjectController(HttpServletRequest request, MyJwtUtil myJwtUtil, ProjectService projectService) {
         this.request = request;
         this.myJwtUtil = myJwtUtil;
         this.projectService = projectService;
     }
 
-    @PostMapping("/project/createProject")
+    @PostMapping("/project/create")
     public Message createProject(@RequestBody Project project){
         String token = request.getHeader("token");
-        System.out.println(token);
         String username = myJwtUtil.getUsernameFromToken(token);
         int userId = myJwtUtil.getUserIdFromToken(token);
 

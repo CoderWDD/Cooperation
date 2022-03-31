@@ -1,6 +1,7 @@
 package com.example.cooperationproject.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.example.cooperationproject.entity.NewProjectInfo;
 import com.example.cooperationproject.pojo.Project;
 
 public interface ProjectService extends IService<Project> {
@@ -10,11 +11,11 @@ public interface ProjectService extends IService<Project> {
 
     Project FindProjectById(Integer projectId);
 
-    Project FindProjectByInvitationCode(Integer invitationCode);
+    Project FindProjectByInvitationCode(String invitationCode);
 
     boolean DeleteProjectByName(String projectName,Integer userId,String username);
 
     boolean DeleteProjectById(Integer projectId,Integer userId,String username);
 
-    boolean ModifyProject(Project project,String username);
+    boolean ModifyProject(NewProjectInfo project,Integer projectId,String invitationCode, String username);
 }

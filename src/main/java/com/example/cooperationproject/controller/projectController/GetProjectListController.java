@@ -33,8 +33,7 @@ public class GetProjectListController {
         this.uidPidService = uidPidService;
     }
 
-    @GetMapping("/project/getProjectList")
-
+    @GetMapping("/project/getList")
     public Message getProjectList(){
 
         String token = request.getHeader("token");

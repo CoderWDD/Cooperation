@@ -7,9 +7,7 @@ import com.example.cooperationproject.utils.ResultUtil;
 import com.example.cooperationproject.utils.TranslateUtil;
 import com.example.cooperationproject.utils.result.Message;
 import com.example.cooperationproject.utils.result.StatusCode;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
@@ -24,18 +22,18 @@ public class LoginController {
         this.myJwtUtil = myJwtUtil;
     }
 
-    @PostMapping("/user/login")
-    public Message loginController(@RequestBody User user){
-        boolean res = userService.Login(user.getUserName(), user.getPassword());
+    @PostMapping("/user/login/{username}/{password}")
+    public Message loginController(@PathVariable(value = "username") String username,@PathVariable(value = "password") String password){
+        boolean res = userService.Login(username, password);
 
         if (res){
             // 如果数据库中有user
 
             // 则从数据库中取出当前用户的所有信息存在token中
-            User userInstance = userService.FindUserByUsername(user.getUserName());
+            User userInstance = userService.FindUserByUsername(username);
 
             // 存在token中的password，后面会再加密，避免二次加密
-            userInstance.setPassword(user.getPassword());
+            userInstance.setPassword(password);
 
             Map<String,Object> map = TranslateUtil.UserToMap(userInstance);
 

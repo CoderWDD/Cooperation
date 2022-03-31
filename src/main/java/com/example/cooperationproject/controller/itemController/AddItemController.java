@@ -1,7 +1,7 @@
 package com.example.cooperationproject.controller.itemController;
 
 
-import com.example.cooperationproject.constant.AuthenticationConstant;
+import com.example.cooperationproject.constant.ConstantFiledUtil;
 import com.example.cooperationproject.pojo.TaskItem;
 import com.example.cooperationproject.pojo.UidPid;
 import com.example.cooperationproject.pojo.UidTidAuid;
@@ -50,7 +50,7 @@ public class AddItemController {
     // TODO :  将创建完的itemId返回
     // 解决方案：新建一个实体类封装返回信息和itemId
 
-    @PostMapping("/item/addItem")
+    @PostMapping("/item/add")
     public Message addItem(@RequestBody TaskItem taskItem){
         String token = request.getHeader("token");
         int userId = myJwtUtil.getUserIdFromToken(token);
@@ -70,7 +70,6 @@ public class AddItemController {
             if (Objects.isNull(executor)){
                 return ResultUtil.error(StatusCode.BadRequest,"执行人信息错误！");
             }
-
             executorId = executor.getUserId();
         }
 
@@ -92,14 +91,14 @@ public class AddItemController {
                     // 将执行人和创建人的权限存入数据库
 
                     try{
-                        UidTidAuid authorAu = new UidTidAuid(userId,taskItem.getItemId(), AuthenticationConstant.AUTHOR);
+                        UidTidAuid authorAu = new UidTidAuid(userId,taskItem.getItemId(), ConstantFiledUtil.AUTHOR_ID);
 
                         uidTidAuidService.InsertUidTidAuid(authorAu);
 
                         if (executorId != userId){
 
-                            // 如果执行人和创建人不一样
-                            UidTidAuid executorAu = new UidTidAuid(executorId, taskItem.getItemId(), AuthenticationConstant.ADMIN);
+                            // 如果执行人和创建人不一样,默认执行人是管理员
+                            UidTidAuid executorAu = new UidTidAuid(executorId, taskItem.getItemId(), ConstantFiledUtil.ADMIN_ID);
 
                             uidTidAuidService.InsertUidTidAuid(executorAu);
                         }

@@ -8,6 +8,7 @@ import com.example.cooperationproject.utils.ResultUtil;
 import com.example.cooperationproject.utils.result.Message;
 import com.example.cooperationproject.utils.result.StatusCode;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -40,8 +41,8 @@ public class GetCooperatorController {
      * @param projectId
      * @return
      */
-    @GetMapping("/project/getCooperator")
-    public Message getProjectCooperator(@RequestParam int projectId){
+    @GetMapping("/project/getCooperator/{projectId}")
+    public Message getProjectCooperator(@PathVariable(value = "projectId") Integer projectId){
         if (Objects.isNull(projectId)){
             return ResultUtil.error(StatusCode.BadRequest,"projectId不能为空！");
         }

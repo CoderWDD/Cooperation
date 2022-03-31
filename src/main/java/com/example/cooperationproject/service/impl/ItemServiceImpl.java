@@ -2,9 +2,12 @@ package com.example.cooperationproject.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.example.cooperationproject.entity.NewTaskItem;
 import com.example.cooperationproject.pojo.TaskItem;
 import com.example.cooperationproject.mapper.TaskItemMapper;
 import com.example.cooperationproject.service.ItemService;
+import com.example.cooperationproject.service.UidTidAuidService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,6 +16,9 @@ import java.util.Objects;
 
 @Service
 public class ItemServiceImpl extends ServiceImpl<TaskItemMapper, TaskItem> implements ItemService {
+
+    @Autowired
+    private UidTidAuidService uidTidAuidService;
 
     @Override
     public boolean AddItem(TaskItem taskItem) {
@@ -49,55 +55,51 @@ public class ItemServiceImpl extends ServiceImpl<TaskItemMapper, TaskItem> imple
         return taskItem;
     }
 
-    /**
-     * 判断任务是否已经存在
-     * @param taskItemId
-     * @param itemName
-     * @param author
-     * @param projectId
-     * @param username
-     * @return
-     */
-    @Override
-    public boolean IsItemExciting(Integer taskItemId, String itemName, String author, Integer projectId,String username) {
-        TaskItem findItemByIdRes = FindItemById(taskItemId);
 
-        if (!Objects.isNull(findItemByIdRes)){
-            // 如果任务id已经存在
-            return true;
-        }
-
-        TaskItem findItemByNameRes = FindItemByName(itemName, username, projectId);
-
-        if (!Objects.isNull(findItemByNameRes)){
-            return true;
-        }
-        return false;
-    }
+//    @Override
+//    public boolean IsItemExciting(Integer taskItemId, String itemName, String author, Integer projectId,String username) {
+//        TaskItem findItemByIdRes = FindItemById(taskItemId);
+//
+//        if (!Objects.isNull(findItemByIdRes)){
+//            // 如果任务id已经存在
+//            return true;
+//        }
+//
+//        TaskItem findItemByNameRes = FindItemByName(itemName, username, projectId);
+//
+//        if (!Objects.isNull(findItemByNameRes)){
+//            return true;
+//        }
+//        return false;
+//    }
 
     @Override
-    public boolean DeleteItemById(Integer taskItemId) {
+    public boolean DeleteItemById(Integer userId,Integer taskItemId) {
 
         boolean removeById = removeById(taskItemId);
 
-        return removeById;
+        boolean uidtid = uidTidAuidService.DeleteByUIDTID(userId, taskItemId);
+
+        return removeById && uidtid;
     }
 
     @Override
-    public boolean DeleteItemByName(String itemName, String author, Integer projectId) {
-        QueryWrapper<TaskItem> wrapper = new QueryWrapper<>();
+    public boolean ModifyItemInfo(Integer itemId,NewTaskItem newTaskItem) {
 
-        wrapper.eq("item_name",itemName);
-        wrapper.eq("author",author);
-        wrapper.eq("project_id",projectId);
+        TaskItem taskItem = FindItemById(itemId);
 
-        boolean remove = remove(wrapper);
+        if (Objects.isNull(taskItem)){
+            return false;
+        }
 
-        return remove;
-    }
+        // TODO : 如果执行人不一样了。需要更改其权限
 
-    @Override
-    public boolean ModifyItemInfo(TaskItem taskItem) {
+        taskItem.setStatus(newTaskItem.getStatus());
+        taskItem.setExecutor(newTaskItem.getExecutor());
+        taskItem.setDescription(newTaskItem.getDescription());
+        taskItem.setItemTime(newTaskItem.getItemTime());
+        taskItem.setItemName(newTaskItem.getItemName());
+
         boolean updateById = updateById(taskItem);
 
         return updateById;

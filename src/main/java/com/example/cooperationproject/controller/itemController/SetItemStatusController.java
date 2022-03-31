@@ -1,5 +1,6 @@
 package com.example.cooperationproject.controller.itemController;
 
+import com.example.cooperationproject.entity.NewTaskItem;
 import com.example.cooperationproject.pojo.TaskItem;
 import com.example.cooperationproject.service.ItemService;
 import com.example.cooperationproject.utils.MyJwtUtil;
@@ -26,10 +27,9 @@ public class SetItemStatusController {
         this.itemService = itemService;
     }
 
-    // TODO : 加上权限判断，防止权限不够的也来修改
 
-    @PostMapping("/item/setItemStatus/{itemId}")
-    public Message SetItemStatus(@PathVariable Integer itemId, @RequestParam String itemStatus){
+    @PostMapping("/item/setStatus/{itemId}")
+    public Message SetItemStatus(@PathVariable(value = "itemId") Integer itemId, @RequestParam String itemStatus){
         String token = request.getHeader("token");
         String username = myJwtUtil.getUsernameFromToken(token);
 
@@ -41,8 +41,9 @@ public class SetItemStatusController {
         TaskItem taskItem = itemService.FindItemById(itemId);
 
         if (!Objects.isNull(taskItem)){
-            taskItem.setStatus(itemStatus);
-            boolean modifyItemInfo = itemService.ModifyItemInfo(taskItem);
+            NewTaskItem newTaskItem = new NewTaskItem(taskItem);
+            newTaskItem.setStatus(itemStatus);
+            boolean modifyItemInfo = itemService.ModifyItemInfo(taskItem.getItemId(),newTaskItem);
 
             if (modifyItemInfo){
                 return ResultUtil.success("任务状态更新成功！");

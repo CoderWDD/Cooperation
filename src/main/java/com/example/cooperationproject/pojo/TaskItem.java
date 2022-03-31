@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.lang.NonNull;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -22,6 +23,10 @@ public class TaskItem implements Serializable {
     @TableField("item_id")
     private int itemId;
 
+    /**
+     * 项目id不能为null，否则放不进数据库
+     */
+    @NonNull
     @TableField("project_id")
     private int projectId;
 

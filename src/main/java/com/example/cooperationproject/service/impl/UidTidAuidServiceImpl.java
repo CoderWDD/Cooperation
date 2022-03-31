@@ -36,4 +36,12 @@ public class UidTidAuidServiceImpl extends ServiceImpl<UidTidAuidMapper, UidTidA
 
         return uidTidAuid;
     }
+
+    @Override
+    public boolean DeleteByUIDTID(Integer userId, Integer itemId) {
+        QueryWrapper<UidTidAuid> wrapper = new QueryWrapper<>();
+        wrapper.eq("user_id",userId);
+        wrapper.eq("item_id",itemId);
+        return remove(wrapper);
+    }
 }
