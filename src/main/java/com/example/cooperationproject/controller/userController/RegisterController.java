@@ -26,5 +26,4 @@ public class RegisterController {
             return ResultUtil.error(400,"用户名已存在！");
         }
     }
-
 }

@@ -17,4 +17,13 @@ public class TaskItemServiceImpl extends ServiceImpl<TaskItemMapper, TaskItem> i
         wrapper.eq("executor",username);
         return list(wrapper);
     }
+
+    @Override
+    public List<TaskItem> GetTaskItemListByProjectId(Integer projectId) {
+        QueryWrapper<TaskItem> wrapper = new QueryWrapper<>();
+
+        wrapper.eq("project_id",projectId);
+
+        return list(wrapper);
+    }
 }

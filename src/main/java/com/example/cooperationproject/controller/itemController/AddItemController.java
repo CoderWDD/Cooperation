@@ -47,9 +47,6 @@ public class AddItemController {
         this.userService = userService;
     }
 
-    // TODO :  将创建完的itemId返回
-    // 解决方案：新建一个实体类封装返回信息和itemId
-
     @PostMapping("/item/add")
     public Message addItem(@RequestBody TaskItem taskItem){
         String token = request.getHeader("token");

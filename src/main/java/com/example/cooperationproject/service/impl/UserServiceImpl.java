@@ -95,6 +95,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     @Override
     public boolean DeleteUserByUsername(String username) {
+
+        // TODO : 将对应userid下的project和item删除
         QueryWrapper<User> wrapper = new QueryWrapper<>();
         wrapper.eq("user_name",username);
         return remove(wrapper);

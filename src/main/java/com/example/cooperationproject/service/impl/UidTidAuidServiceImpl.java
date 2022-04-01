@@ -8,6 +8,8 @@ import com.example.cooperationproject.mapper.UidTidAuidMapper;
 import com.example.cooperationproject.service.UidTidAuidService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class UidTidAuidServiceImpl extends ServiceImpl<UidTidAuidMapper, UidTidAuid> implements UidTidAuidService {
 
@@ -38,9 +40,23 @@ public class UidTidAuidServiceImpl extends ServiceImpl<UidTidAuidMapper, UidTidA
     }
 
     @Override
+    public List<UidTidAuid> FindAuidListByProjectId(Integer projectId) {
+        QueryWrapper<UidTidAuid> wrapper = new QueryWrapper<>();
+        wrapper.eq("project_id",projectId);
+        return list(wrapper);
+    }
+
+    @Override
     public boolean DeleteByUIDTID(Integer userId, Integer itemId) {
         QueryWrapper<UidTidAuid> wrapper = new QueryWrapper<>();
         wrapper.eq("user_id",userId);
+        wrapper.eq("item_id",itemId);
+        return remove(wrapper);
+    }
+
+    @Override
+    public boolean DeleteByTID(Integer itemId) {
+        QueryWrapper<UidTidAuid> wrapper = new QueryWrapper<>();
         wrapper.eq("item_id",itemId);
         return remove(wrapper);
     }

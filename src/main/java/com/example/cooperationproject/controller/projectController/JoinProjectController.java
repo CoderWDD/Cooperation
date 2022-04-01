@@ -2,10 +2,10 @@ package com.example.cooperationproject.controller.projectController;
 
 import com.example.cooperationproject.constant.ConstantFiledUtil;
 import com.example.cooperationproject.pojo.Project;
+import com.example.cooperationproject.pojo.TaskItem;
 import com.example.cooperationproject.pojo.UidPidAuId;
-import com.example.cooperationproject.service.ProjectService;
-import com.example.cooperationproject.service.UidPidAuidService;
-import com.example.cooperationproject.service.UidPidService;
+import com.example.cooperationproject.pojo.UidTidAuid;
+import com.example.cooperationproject.service.*;
 import com.example.cooperationproject.utils.MyJwtUtil;
 import com.example.cooperationproject.utils.ResultUtil;
 import com.example.cooperationproject.utils.result.Message;
@@ -17,10 +17,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 import java.util.Objects;
 
 @RestController
 public class JoinProjectController {
+
+    @Autowired
+    private TaskItemService taskItemService;
+
+    private final UidTidAuidService uidTidAuidService;
 
     private final UidPidAuidService uidPidAuidService;
 
@@ -32,12 +38,13 @@ public class JoinProjectController {
 
     private final MyJwtUtil myJwtUtil;
 
-    public JoinProjectController(UidPidService uidPidService, ProjectService projectService, HttpServletRequest request, MyJwtUtil myJwtUtil, UidPidAuidService uidPidAuidService) {
+    public JoinProjectController(UidPidService uidPidService, ProjectService projectService, HttpServletRequest request, MyJwtUtil myJwtUtil, UidPidAuidService uidPidAuidService, UidTidAuidService uidTidAuidService) {
         this.uidPidService = uidPidService;
         this.projectService = projectService;
         this.request = request;
         this.myJwtUtil = myJwtUtil;
         this.uidPidAuidService = uidPidAuidService;
+        this.uidTidAuidService = uidTidAuidService;
     }
 
     @PostMapping("/project/joinProject/{invitationCode}")
@@ -58,6 +65,17 @@ public class JoinProjectController {
         // 默认被邀请进去都是管理员
         UidPidAuId uidPidAuId = new UidPidAuId(userId, project.getProjectId(), ConstantFiledUtil.ADMIN_ID);
         boolean auInsert = uidPidAuidService.InsertUidPidAuid(uidPidAuId);
+
+        // 将加入的项目里的任务的权限给当前账号
+
+        List<TaskItem> taskItems = taskItemService.GetTaskItemListByProjectId(project.getProjectId());
+
+        for (TaskItem e : taskItems){
+            int itemId = e.getItemId();
+            // 默认是Admin
+            UidTidAuid uidTidAuid = new UidTidAuid(userId,itemId,ConstantFiledUtil.ADMIN_ID);
+            uidTidAuidService.InsertUidTidAuid(uidTidAuid);
+        }
 
         if (insert && auInsert){
             return ResultUtil.success("成功加入项目：" + project.getProjectName());

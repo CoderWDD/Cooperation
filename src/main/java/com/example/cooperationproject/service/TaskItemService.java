@@ -8,4 +8,6 @@ import java.util.List;
 public interface TaskItemService extends IService<TaskItem> {
     List<TaskItem> GetTaskItemListByUsername(String username);
 
+    List<TaskItem> GetTaskItemListByProjectId(Integer projectId);
+
 }

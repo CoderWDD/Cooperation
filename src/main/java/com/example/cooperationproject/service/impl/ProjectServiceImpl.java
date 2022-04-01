@@ -8,9 +8,7 @@ import com.example.cooperationproject.entity.NewProjectInfo;
 import com.example.cooperationproject.pojo.Project;
 import com.example.cooperationproject.mapper.ProjectMapper;
 import com.example.cooperationproject.pojo.UidPidAuId;
-import com.example.cooperationproject.service.ProjectService;
-import com.example.cooperationproject.service.UidPidAuidService;
-import com.example.cooperationproject.service.UidPidService;
+import com.example.cooperationproject.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
@@ -20,6 +18,9 @@ import java.util.Objects;
 
 @Service
 public class ProjectServiceImpl extends ServiceImpl<ProjectMapper, Project> implements ProjectService {
+
+    @Autowired
+    private ItemService itemService;
 
     @Autowired
     private UidPidService uidPidService;
@@ -111,6 +112,11 @@ public class ProjectServiceImpl extends ServiceImpl<ProjectMapper, Project> impl
             // 如果成功删除了项目，则应该把关联表中的关系也删除
             uidPidService.DeleteByUidPid(userId,projectId);
             uidPidAuidService.DeleteUidPidAuid(userId,projectId);
+
+            // 删除该project对应下的item
+
+            itemService.DeleteItemByProjectId(projectId);
+
             // 不考虑删除失败的情况。有时间再来加
             return true;
         }

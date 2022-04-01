@@ -88,9 +88,17 @@ public class ItemServiceImpl extends ServiceImpl<TaskItemMapper, TaskItem> imple
 
         boolean removeById = removeById(taskItemId);
 
-        boolean uidtid = uidTidAuidService.DeleteByUIDTID(userId, taskItemId);
+        // 根据itemId进行删除
+        boolean uidtid = uidTidAuidService.DeleteByTID(taskItemId);
 
         return removeById && uidtid;
+    }
+
+    @Override
+    public boolean DeleteItemByProjectId(Integer projectId) {
+        QueryWrapper<TaskItem> wrapper = new QueryWrapper<>();
+        wrapper.eq("project_id",projectId);
+        return remove(wrapper);
     }
 
     @Override

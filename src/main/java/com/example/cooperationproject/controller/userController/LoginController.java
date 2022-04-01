@@ -1,5 +1,6 @@
 package com.example.cooperationproject.controller.userController;
 
+import com.example.cooperationproject.entity.UserLogin;
 import com.example.cooperationproject.pojo.User;
 import com.example.cooperationproject.service.UserService;
 import com.example.cooperationproject.utils.MyJwtUtil;
@@ -22,18 +23,18 @@ public class LoginController {
         this.myJwtUtil = myJwtUtil;
     }
 
-    @PostMapping("/user/login/{username}/{password}")
-    public Message loginController(@PathVariable(value = "username") String username,@PathVariable(value = "password") String password){
-        boolean res = userService.Login(username, password);
+    @PostMapping("/user/login")
+    public Message loginController(@RequestBody UserLogin userLogin){
+        boolean res = userService.Login(userLogin.getUsername(), userLogin.getPassword());
 
         if (res){
             // 如果数据库中有user
 
             // 则从数据库中取出当前用户的所有信息存在token中
-            User userInstance = userService.FindUserByUsername(username);
+            User userInstance = userService.FindUserByUsername(userLogin.getUsername());
 
             // 存在token中的password，后面会再加密，避免二次加密
-            userInstance.setPassword(password);
+            userInstance.setPassword(userLogin.getPassword());
 
             Map<String,Object> map = TranslateUtil.UserToMap(userInstance);
 
