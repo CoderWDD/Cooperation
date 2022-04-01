@@ -2,11 +2,15 @@ package com.example.cooperationproject.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.example.cooperationproject.constant.ConstantFiledUtil;
 import com.example.cooperationproject.entity.NewTaskItem;
 import com.example.cooperationproject.pojo.TaskItem;
 import com.example.cooperationproject.mapper.TaskItemMapper;
+import com.example.cooperationproject.pojo.UidTidAuid;
+import com.example.cooperationproject.pojo.User;
 import com.example.cooperationproject.service.ItemService;
 import com.example.cooperationproject.service.UidTidAuidService;
+import com.example.cooperationproject.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,8 +21,14 @@ import java.util.Objects;
 @Service
 public class ItemServiceImpl extends ServiceImpl<TaskItemMapper, TaskItem> implements ItemService {
 
-    @Autowired
-    private UidTidAuidService uidTidAuidService;
+    private final UidTidAuidService uidTidAuidService;
+
+    private final UserService userService;
+
+    public ItemServiceImpl(UidTidAuidService uidTidAuidService, UserService userService) {
+        this.uidTidAuidService = uidTidAuidService;
+        this.userService = userService;
+    }
 
     @Override
     public boolean AddItem(TaskItem taskItem) {
@@ -84,7 +94,7 @@ public class ItemServiceImpl extends ServiceImpl<TaskItemMapper, TaskItem> imple
     }
 
     @Override
-    public boolean ModifyItemInfo(Integer itemId,NewTaskItem newTaskItem) {
+    public boolean ModifyItemInfo(String oldExecutor,Integer itemId,NewTaskItem newTaskItem) {
 
         TaskItem taskItem = FindItemById(itemId);
 
@@ -92,7 +102,21 @@ public class ItemServiceImpl extends ServiceImpl<TaskItemMapper, TaskItem> imple
             return false;
         }
 
-        // TODO : 如果执行人不一样了。需要更改其权限
+        // 如果执行人不一样了。需要更改其权限
+
+        if (!taskItem.getExecutor().equals(newTaskItem.getExecutor())){
+
+            User oldUser = userService.FindUserByUsername(oldExecutor);
+
+            User newUser = userService.FindUserByUsername(newTaskItem.getExecutor());
+
+
+
+            UidTidAuid uidTidAuid = new UidTidAuid(newUser.getUserId(),itemId, ConstantFiledUtil.ADMIN_ID);
+
+            uidTidAuidService.InsertUidTidAuid(uidTidAuid);
+            uidTidAuidService.DeleteByUIDTID(oldUser.getUserId(),itemId);
+        }
 
         taskItem.setStatus(newTaskItem.getStatus());
         taskItem.setExecutor(newTaskItem.getExecutor());

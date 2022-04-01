@@ -1,5 +1,6 @@
 package com.example.cooperationproject.pojo;
 
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -19,8 +20,7 @@ import java.util.Date;
 @TableName("taskitem")
 
 public class TaskItem implements Serializable {
-    @TableId
-    @TableField("item_id")
+    @TableId(type = IdType.AUTO)
     private int itemId;
 
     /**
@@ -49,4 +49,5 @@ public class TaskItem implements Serializable {
 
     @TableField("description")
     private String description;
+
 }

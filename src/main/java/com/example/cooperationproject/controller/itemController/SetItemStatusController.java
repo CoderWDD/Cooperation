@@ -43,11 +43,13 @@ public class SetItemStatusController {
         if (!Objects.isNull(taskItem)){
             NewTaskItem newTaskItem = new NewTaskItem(taskItem);
             newTaskItem.setStatus(itemStatus);
-            boolean modifyItemInfo = itemService.ModifyItemInfo(taskItem.getItemId(),newTaskItem);
+            boolean modifyItemInfo = itemService.ModifyItemInfo(taskItem.getExecutor(),taskItem.getItemId(),newTaskItem);
 
             if (modifyItemInfo){
                 return ResultUtil.success("任务状态更新成功！");
             }
+        }else {
+            return ResultUtil.error(StatusCode.BadRequest,"ItemId错误！");
         }
 
         return ResultUtil.error(StatusCode.BadRequest,"任务状态更新失败！");

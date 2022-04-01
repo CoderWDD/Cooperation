@@ -1,5 +1,6 @@
 package com.example.cooperationproject.controller.itemController;
 
+import com.example.cooperationproject.constant.ConstantFiledUtil;
 import com.example.cooperationproject.entity.NewTaskItem;
 import com.example.cooperationproject.pojo.TaskItem;
 import com.example.cooperationproject.service.ItemService;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Objects;
 
 
 @RestController
@@ -34,7 +36,12 @@ public class ModifyItemInfoController {
         String token = request.getHeader("token");
         String username = myJwtUtil.getUsernameFromToken(token);
 
-        boolean modifyItemInfo = itemService.ModifyItemInfo(itemId, newTaskItem);
+        TaskItem taskItem = itemService.FindItemById(itemId);
+        if (Objects.isNull(taskItem)){
+            return ResultUtil.error(StatusCode.BadRequest,"ItemId错误！");
+        }
+
+        boolean modifyItemInfo = itemService.ModifyItemInfo(taskItem.getExecutor(),itemId, newTaskItem);
 
         if (modifyItemInfo){
             return ResultUtil.success("修改成功！");

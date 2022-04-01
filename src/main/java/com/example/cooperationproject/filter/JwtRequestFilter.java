@@ -52,7 +52,6 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         try {
             username = myJwtUtil.getUsernameFromToken(token);
             password = myJwtUtil.getPasswordFromToken(token);
-
         }catch (Exception e){
             throw new RuntimeException("token非法!!!!");
         }
@@ -62,6 +61,9 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
             BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
+            if (Objects.isNull(loginUser)){
+                return;
+            }
 
             if (myJwtUtil.isTokenValidate(token,loginUser.getUser()) && !Objects.isNull(password) && passwordEncoder.matches(password,loginUser.getUser().getPassword())){
                 UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken

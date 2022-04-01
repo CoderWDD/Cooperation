@@ -42,6 +42,7 @@ public class DeleteUserController {
             return ResultUtil.error(StatusCode.BadRequest,"用户信息不存在！");
         }
 
+
         boolean res = userService.DeleteUserByUsername(username);
 
         if (res){

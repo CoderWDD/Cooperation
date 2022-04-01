@@ -15,7 +15,7 @@ public interface ItemService extends IService<TaskItem> {
 
     boolean DeleteItemById(Integer userId,Integer taskItemId);
 
-    boolean ModifyItemInfo(Integer itemId,NewTaskItem newTaskItem);
+    boolean ModifyItemInfo(String oldExecutor,Integer itemId,NewTaskItem newTaskItem);
 
     List<TaskItem> GetItemListByProjectId(Integer projectId);
 

@@ -16,7 +16,7 @@ import java.util.Map;
 @Component
 public class MyJwtUtil implements Serializable {
     // 设置token有效期为一周
-    private static final Long JWT_TOKEN_VALIDITY = 7 * 24 * 60 * 60L;
+    private static final Long JWT_TOKEN_VALIDITY = 7 * 24 * 60 * 60 * 1000L;
 
     // 设置密钥明文
     private static String secretKey = "CoderWdd";
@@ -74,7 +74,11 @@ public class MyJwtUtil implements Serializable {
      * @return
      */
     public String getUsernameFromToken(String token){
+
         Claims claims = parseToken(token);
+
+        System.out.println(claims.getExpiration().getTime());
+
         String username = claims.getSubject();
         return username;
     }

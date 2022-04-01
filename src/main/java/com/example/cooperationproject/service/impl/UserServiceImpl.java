@@ -66,7 +66,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         String username = user.getUserName();
 
         QueryWrapper<User> wrapper = new QueryWrapper<>();
-        wrapper.eq("user_name",username);
+        wrapper.eq("user_id",user.getUserId());
         User dbUser = getOne(wrapper);
         if (Objects.isNull(dbUser)){
             return false;
@@ -85,22 +85,26 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             dbUser.setNickName(user.getNickName());
             dbUser.setPhone(user.getPhone());
             dbUser.setSex(user.getSex());
+            dbUser.setUserName(user.getUserName());
         }catch (Exception e){
             return false;
         }
 
-        updateById(dbUser);
-        // 能跑到这里来，一定是修改成功了
-        return true;
+        return updateById(dbUser);
     }
 
     @Override
     public boolean DeleteUserByUsername(String username) {
         QueryWrapper<User> wrapper = new QueryWrapper<>();
         wrapper.eq("user_name",username);
-        User user = getOne(wrapper);
-        if (Objects.isNull(user)) return false;
-        return removeById(user.getUserId());
+        return remove(wrapper);
+    }
+
+    @Override
+    public boolean DeleteUserByUserId(Integer userId) {
+        QueryWrapper<User> wrapper = new QueryWrapper<>();
+        wrapper.eq("user_Id",userId);
+        return remove(wrapper);
     }
 
     @Override
@@ -141,7 +145,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
         // 如果用户不在数据库，则抛出异常
         if (Objects.isNull(user) || StringUtils.isNullOrEmpty(user.getUserName())){
-            throw new UsernameNotFoundException("User not found with username: " + username);
+//            throw new UsernameNotFoundException("User not found with username: " + username);
+            return null;
         }
 
         // 能跑到这里，说明token一定是合法的，即用户一定存在
@@ -195,4 +200,5 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         LoginUser loginUser = new LoginUser(user,auList);
         return loginUser;
     }
+
 }

@@ -12,6 +12,8 @@ public interface UserService extends IService<User>, UserDetailsService {
 
     boolean DeleteUserByUsername(String username);
 
+    boolean DeleteUserByUserId(Integer userId);
+
     User FindUserByUsername(String username);
 
     String FindUsernameByUserId(Integer userId);
