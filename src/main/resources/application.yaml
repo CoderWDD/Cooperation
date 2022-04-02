@@ -1,11 +1,10 @@
-#debug: true
 
 server:
   port: 3345
 
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/cooperation?characterEncoding=utf-8&serverTimezone=UTC
+    url: jdbc:mysql://106.15.2.32:3346/cooperation?characterEncoding=utf-8&serverTimezone=UTC
     username: root
     password: 123456qq.
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -15,3 +14,4 @@ mybatis-plus:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
   mapper-locations:
     - classpath*:/mapper/**/*.xml
+

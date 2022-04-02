@@ -19,7 +19,6 @@ public class RegisterController {
     @PostMapping("/user/register")
     public Message register(@RequestBody User user){
         boolean res = userService.Register(user);
-        Message message = new Message();
         if (res){
             return ResultUtil.success("注册成功！");
         }else {
