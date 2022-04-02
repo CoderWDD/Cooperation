@@ -61,7 +61,7 @@ A project that provices the api interface for fontend,which helps people to mana
     ```
   - uidpidauid表：
     ```
-    create table uidauid(
+    create table uidpidauid(
       user_id int not null comment '用户id',
       project_id int not null comment'项目id',
       au_id int not null comment '权限id'
