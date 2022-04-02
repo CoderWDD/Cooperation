@@ -11,6 +11,7 @@ import com.example.cooperationproject.utils.result.StatusCode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
@@ -32,6 +33,7 @@ public class CreateProjectController {
         this.projectService = projectService;
     }
 
+    @ResponseBody
     @PostMapping("/project/create")
     public Message createProject(@RequestBody Project project){
         String token = request.getHeader("token");

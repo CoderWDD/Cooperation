@@ -8,6 +8,7 @@ import com.example.cooperationproject.utils.MyJwtUtil;
 import com.example.cooperationproject.utils.ResultUtil;
 import com.example.cooperationproject.utils.result.Message;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
@@ -33,6 +34,7 @@ public class GetProjectListController {
         this.uidPidService = uidPidService;
     }
 
+    @ResponseBody
     @GetMapping("/project/getList")
     public Message getProjectList(){
 

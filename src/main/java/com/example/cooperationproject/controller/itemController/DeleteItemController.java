@@ -9,6 +9,7 @@ import com.example.cooperationproject.utils.result.Message;
 import com.example.cooperationproject.utils.result.StatusCode;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
@@ -31,6 +32,7 @@ public class DeleteItemController {
         this.uidTidAuidService = uidTidAuidService;
     }
 
+    @ResponseBody
     @PostMapping("/item/delete/{itemId}")
     public Message deleteItem(@PathVariable Integer itemId){
         String token = request.getHeader("token");

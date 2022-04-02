@@ -7,10 +7,7 @@ import com.example.cooperationproject.utils.MyJwtUtil;
 import com.example.cooperationproject.utils.ResultUtil;
 import com.example.cooperationproject.utils.result.Message;
 import com.example.cooperationproject.utils.result.StatusCode;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Objects;
@@ -30,6 +27,7 @@ public class GetProjectInfoController {
         this.projectService = projectService;
     }
 
+    @ResponseBody
     @GetMapping("/project/get/{projectId}")
     public Message getProjectInfo(@PathVariable(value = "projectId") Integer projectId){
         String token = request.getHeader("token");

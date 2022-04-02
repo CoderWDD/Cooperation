@@ -9,6 +9,7 @@ import com.example.cooperationproject.utils.result.StatusCode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
@@ -18,16 +19,17 @@ public class ModifyInfoController {
 
     private final UserService userService;
 
-    @Autowired
-    private HttpServletRequest request;
+    private final HttpServletRequest request;
 
-    @Autowired
-    private MyJwtUtil myJwtUtil;
+    private final MyJwtUtil myJwtUtil;
 
-    public ModifyInfoController(UserService userService) {
+    public ModifyInfoController(UserService userService, HttpServletRequest request, MyJwtUtil myJwtUtil) {
         this.userService = userService;
+        this.request = request;
+        this.myJwtUtil = myJwtUtil;
     }
 
+    @ResponseBody
     @PostMapping("/user/modify")
     public Message modifyInfo(@RequestBody User user){
         String token = request.getHeader("token");

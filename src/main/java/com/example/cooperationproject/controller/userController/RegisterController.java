@@ -6,6 +6,7 @@ import com.example.cooperationproject.utils.ResultUtil;
 import com.example.cooperationproject.utils.result.Message;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -16,6 +17,7 @@ public class RegisterController {
         this.userService = userService;
     }
 
+    @ResponseBody
     @PostMapping("/user/register")
     public Message register(@RequestBody User user){
         boolean res = userService.Register(user);

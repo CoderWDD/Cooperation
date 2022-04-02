@@ -9,6 +9,7 @@ import com.example.cooperationproject.utils.result.StatusCode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
@@ -29,6 +30,7 @@ public class DeleteUserController {
         this.request = request;
     }
 
+    @ResponseBody
     @PostMapping("/user/delete")
     public Message deleteUser(){
 

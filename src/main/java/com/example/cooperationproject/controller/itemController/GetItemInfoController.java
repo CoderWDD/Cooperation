@@ -5,10 +5,7 @@ import com.example.cooperationproject.service.ItemService;
 import com.example.cooperationproject.utils.ResultUtil;
 import com.example.cooperationproject.utils.result.Message;
 import com.example.cooperationproject.utils.result.StatusCode;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Objects;
 
@@ -21,6 +18,7 @@ public class GetItemInfoController {
         this.itemService = itemService;
     }
 
+    @ResponseBody
     @GetMapping("/item/get/{itemId}")
     public Message getItemInfo(@PathVariable(value = "itemId") int itemId){
         TaskItem taskItem = itemService.FindItemById(itemId);

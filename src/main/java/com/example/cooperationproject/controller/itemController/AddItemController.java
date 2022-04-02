@@ -17,6 +17,7 @@ import com.example.cooperationproject.utils.result.StatusCode;
 import com.mysql.cj.util.StringUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
@@ -47,6 +48,7 @@ public class AddItemController {
         this.userService = userService;
     }
 
+    @ResponseBody
     @PostMapping("/item/add")
     public Message addItem(@RequestBody TaskItem taskItem){
         String token = request.getHeader("token");
@@ -75,6 +77,8 @@ public class AddItemController {
         if (!Objects.isNull(item)){
             return ResultUtil.error(StatusCode.BadRequest,"任务信息已存在！");
         }
+
+        taskItem.setStatus("未完成");
 
         List<UidPid> uidPidList = uidPidService.GetPidListByUid(userId);
 

@@ -7,10 +7,7 @@ import com.example.cooperationproject.utils.MyJwtUtil;
 import com.example.cooperationproject.utils.ResultUtil;
 import com.example.cooperationproject.utils.result.Message;
 import com.example.cooperationproject.utils.result.StatusCode;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -31,6 +28,7 @@ public class GetItemListController {
         this.myJwtUtil = myJwtUtil;
     }
 
+    @ResponseBody
     @GetMapping("/item/getListByProjectId/{projectId}")
     public Message getItemListByProjectId(@PathVariable(value = "projectId") int projectId){
 
@@ -44,6 +42,7 @@ public class GetItemListController {
         return ResultUtil.success(taskItemList);
     }
 
+    @ResponseBody
     @GetMapping("/item/getCurrentItemList")
     public Message getItemListByUsername(){
 

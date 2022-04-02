@@ -23,6 +23,7 @@ public class LoginController {
         this.myJwtUtil = myJwtUtil;
     }
 
+    @ResponseBody
     @PostMapping("/user/login")
     public Message loginController(@RequestBody UserLogin userLogin){
         boolean res = userService.Login(userLogin.getUsername(), userLogin.getPassword());

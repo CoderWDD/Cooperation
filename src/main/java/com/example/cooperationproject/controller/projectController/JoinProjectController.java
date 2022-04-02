@@ -11,10 +11,7 @@ import com.example.cooperationproject.utils.ResultUtil;
 import com.example.cooperationproject.utils.result.Message;
 import com.example.cooperationproject.utils.result.StatusCode;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -47,6 +44,7 @@ public class JoinProjectController {
         this.uidTidAuidService = uidTidAuidService;
     }
 
+    @ResponseBody
     @PostMapping("/project/joinProject/{invitationCode}")
     public Message joinProject(@PathVariable(value = "invitationCode") String invitationCode){
         Project project = projectService.FindProjectByInvitationCode(invitationCode);

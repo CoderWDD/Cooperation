@@ -27,7 +27,7 @@ public class SetItemStatusController {
         this.itemService = itemService;
     }
 
-
+    @ResponseBody
     @PostMapping("/item/setStatus/{itemId}")
     public Message SetItemStatus(@PathVariable(value = "itemId") Integer itemId, @RequestParam String itemStatus){
         String token = request.getHeader("token");

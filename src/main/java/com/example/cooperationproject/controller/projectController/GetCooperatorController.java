@@ -7,10 +7,7 @@ import com.example.cooperationproject.utils.MyJwtUtil;
 import com.example.cooperationproject.utils.ResultUtil;
 import com.example.cooperationproject.utils.result.Message;
 import com.example.cooperationproject.utils.result.StatusCode;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
@@ -41,6 +38,7 @@ public class GetCooperatorController {
      * @param projectId
      * @return
      */
+    @ResponseBody
     @GetMapping("/project/getCooperator/{projectId}")
     public Message getProjectCooperator(@PathVariable(value = "projectId") Integer projectId){
         if (Objects.isNull(projectId)){

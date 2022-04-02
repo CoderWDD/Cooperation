@@ -8,10 +8,7 @@ import com.example.cooperationproject.utils.MyJwtUtil;
 import com.example.cooperationproject.utils.ResultUtil;
 import com.example.cooperationproject.utils.result.Message;
 import com.example.cooperationproject.utils.result.StatusCode;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Objects;
@@ -34,6 +31,7 @@ public class ModifyProjectController {
         this.uidPidAuidService = uidPidAuidService;
     }
 
+    @ResponseBody
     @PostMapping("/project/modify/{projectId}")
     public Message modifyProject(@PathVariable(value = "projectId") Integer projectId, @RequestBody NewProjectInfo newProjectInfo){
         String token = request.getHeader("token");
