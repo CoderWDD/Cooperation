@@ -1,6 +1,9 @@
 # Cooperation
 A project that provices the api interface for fontend,which helps people to manage their daily project whenever cooperat with others or self.
 
+# 数据表关系： 
+![image](https://user-images.githubusercontent.com/76061542/161380165-3b0735d8-90b0-4802-92db-a8290d7a82cf.png)
+
 # 数据表创建：
   - user表：
     ```
