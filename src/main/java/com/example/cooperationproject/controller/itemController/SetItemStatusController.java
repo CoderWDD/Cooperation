@@ -27,6 +27,12 @@ public class SetItemStatusController {
         this.itemService = itemService;
     }
 
+    /**
+     * 根据itemId修改item的status
+     * @param itemId
+     * @param itemStatus
+     * @return
+     */
     @ResponseBody
     @PostMapping("/item/setStatus/{itemId}")
     public Message SetItemStatus(@PathVariable(value = "itemId") Integer itemId, @RequestParam String itemStatus){

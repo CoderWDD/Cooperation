@@ -48,6 +48,12 @@ public class AddItemController {
         this.userService = userService;
     }
 
+    /**
+     * 向指定的project中添加任务
+     * @param taskItem
+     * @return
+     */
+
     @ResponseBody
     @PostMapping("/item/add")
     public Message addItem(@RequestBody TaskItem taskItem){

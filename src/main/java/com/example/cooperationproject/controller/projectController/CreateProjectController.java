@@ -33,6 +33,11 @@ public class CreateProjectController {
         this.projectService = projectService;
     }
 
+    /**
+     * 创建project
+     * @param project
+     * @return
+     */
     @ResponseBody
     @PostMapping("/project/create")
     public Message createProject(@RequestBody Project project){

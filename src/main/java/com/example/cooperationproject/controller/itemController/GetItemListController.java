@@ -28,6 +28,11 @@ public class GetItemListController {
         this.myJwtUtil = myJwtUtil;
     }
 
+    /**
+     * 根据projectId获取相应的project下的所有item信息
+     * @param projectId
+     * @return
+     */
     @ResponseBody
     @GetMapping("/item/getListByProjectId/{projectId}")
     public Message getItemListByProjectId(@PathVariable(value = "projectId") int projectId){
@@ -42,6 +47,10 @@ public class GetItemListController {
         return ResultUtil.success(taskItemList);
     }
 
+    /**
+     * 获取当前账号下的所有item信息
+     * @return
+     */
     @ResponseBody
     @GetMapping("/item/getCurrentItemList")
     public Message getItemListByUsername(){

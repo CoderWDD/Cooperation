@@ -44,6 +44,11 @@ public class JoinProjectController {
         this.uidTidAuidService = uidTidAuidService;
     }
 
+    /**
+     * 根据invitationCode加入对应的project
+     * @param invitationCode
+     * @return
+     */
     @ResponseBody
     @PostMapping("/project/joinProject/{invitationCode}")
     public Message joinProject(@PathVariable(value = "invitationCode") String invitationCode){

@@ -31,6 +31,12 @@ public class ModifyProjectController {
         this.uidPidAuidService = uidPidAuidService;
     }
 
+    /**
+     * 根据projectId修改project信息
+     * @param projectId
+     * @param newProjectInfo
+     * @return
+     */
     @ResponseBody
     @PostMapping("/project/modify/{projectId}")
     public Message modifyProject(@PathVariable(value = "projectId") Integer projectId, @RequestBody NewProjectInfo newProjectInfo){

@@ -17,6 +17,11 @@ public class RegisterController {
         this.userService = userService;
     }
 
+    /**
+     * 注册user
+     * @param user
+     * @return
+     */
     @ResponseBody
     @PostMapping("/user/register")
     public Message register(@RequestBody User user){

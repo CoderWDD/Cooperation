@@ -31,6 +31,11 @@ public class DeleteProjectController {
         this.uidPidAuidService = uidPidAuidService;
     }
 
+    /**
+     * 根据projectId删除project
+     * @param projectId
+     * @return
+     */
     @ResponseBody
     @PostMapping("/project/delete/{projectId}")
     public Message deleteProject(@PathVariable(value = "projectId") Integer projectId){

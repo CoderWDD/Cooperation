@@ -23,6 +23,11 @@ public class LoginController {
         this.myJwtUtil = myJwtUtil;
     }
 
+    /**
+     * 登录账号，返回token
+     * @param userLogin
+     * @return
+     */
     @ResponseBody
     @PostMapping("/user/login")
     public Message loginController(@RequestBody UserLogin userLogin){

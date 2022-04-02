@@ -34,6 +34,10 @@ public class GetProjectListController {
         this.uidPidService = uidPidService;
     }
 
+    /**
+     * 获取当前账号下的所有project
+     * @return
+     */
     @ResponseBody
     @GetMapping("/project/getList")
     public Message getProjectList(){

@@ -29,6 +29,11 @@ public class ModifyInfoController {
         this.myJwtUtil = myJwtUtil;
     }
 
+    /**
+     * 修改user信息
+     * @param user
+     * @return
+     */
     @ResponseBody
     @PostMapping("/user/modify")
     public Message modifyInfo(@RequestBody User user){

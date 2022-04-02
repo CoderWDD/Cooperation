@@ -28,6 +28,12 @@ public class ModifyItemInfoController {
         this.itemService = itemService;
     }
 
+    /**
+     * 根据itemId修改指定item信息
+     * @param itemId
+     * @param newTaskItem
+     * @return
+     */
     @ResponseBody
     @PostMapping("/item/modify/{itemId}")
     public Message modifyItemInfo(@PathVariable(value = "itemId") Integer itemId, @RequestBody NewTaskItem newTaskItem){

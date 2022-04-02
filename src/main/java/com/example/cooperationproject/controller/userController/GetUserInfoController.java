@@ -19,6 +19,11 @@ public class GetUserInfoController {
         this.userService = userService;
     }
 
+    /**
+     * 根据username获取user信息
+     * @param username
+     * @return
+     */
     @ResponseBody
     @GetMapping("/user/get/{username}")
     public Message getUserInfo(@PathVariable(value = "username") String username){

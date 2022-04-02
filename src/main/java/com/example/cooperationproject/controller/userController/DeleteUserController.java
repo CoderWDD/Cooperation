@@ -30,6 +30,10 @@ public class DeleteUserController {
         this.request = request;
     }
 
+    /**
+     * 删除当前账号信息及其对应的project与item
+     * @return
+     */
     @ResponseBody
     @PostMapping("/user/delete")
     public Message deleteUser(){

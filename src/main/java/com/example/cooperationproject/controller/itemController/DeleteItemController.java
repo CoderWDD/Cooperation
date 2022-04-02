@@ -32,6 +32,11 @@ public class DeleteItemController {
         this.uidTidAuidService = uidTidAuidService;
     }
 
+    /**
+     * 删除指定project中的指定item
+     * @param itemId
+     * @return
+     */
     @ResponseBody
     @PostMapping("/item/delete/{itemId}")
     public Message deleteItem(@PathVariable Integer itemId){

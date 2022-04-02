@@ -27,6 +27,11 @@ public class GetProjectInfoController {
         this.projectService = projectService;
     }
 
+    /**
+     * 根据projectId获取project的信息
+     * @param projectId
+     * @return
+     */
     @ResponseBody
     @GetMapping("/project/get/{projectId}")
     public Message getProjectInfo(@PathVariable(value = "projectId") Integer projectId){

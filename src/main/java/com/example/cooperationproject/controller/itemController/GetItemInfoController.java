@@ -18,6 +18,11 @@ public class GetItemInfoController {
         this.itemService = itemService;
     }
 
+    /**
+     * 根据itemId返回Item信息
+     * @param itemId
+     * @return
+     */
     @ResponseBody
     @GetMapping("/item/get/{itemId}")
     public Message getItemInfo(@PathVariable(value = "itemId") int itemId){
