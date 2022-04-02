@@ -69,7 +69,7 @@ A project that provices the api interface for fontend,which helps people to mana
     ```
   - authentication表：
     ```
-    create table authentication表(
+    create table authentication(
       au_id int auto_increment not null primary key comment '权限id，从1开始自增长',
       an_name varchar(32) not null default 'user' comment '权限名，默认为普通'
     )ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 comment '权限表';
