@@ -1,6 +1,18 @@
 # Cooperation
 A project that provices the api interface for fontend,which helps people to manage their daily project whenever cooperat with others or self.
 
+# 需求分析：
+  - 为什么要做：
+    - 原因一：
+        - 现状：在现有的To Do List软件中，都是以细化粒度来实现对时间的划分安排
+        - 现实：我们在对学习/项目等进行安排计划时，很难将其粒度细化，此时，不妨将粒度划分地稍大些，将每日每时的计划，安排为阶段性来实施
+        - 好处：划分简易，任务大体进度把握有度
+    - 原因二：
+        - 现状：在进行团队合作的时候，我们很需要将项目进行分工，并且可以实时了解到其他人的进度，方便调整自己的进度和需求
+    - 原因三：
+        - 现状：市面上的大部分类似软件，要么功能过于单一简单，要么功能种类繁多，上手有一定门槛，为学习增加了无形的压力
+        - 好处：自定义性高，上手无难道，基本必须功能整合
+
 # 数据表关系： 
 ![image](https://user-images.githubusercontent.com/76061542/161380165-3b0735d8-90b0-4802-92db-a8290d7a82cf.png)
 
