@@ -10,6 +10,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.lang.Nullable;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -50,6 +51,7 @@ public class User implements Serializable {
     private String description;
 
     @TableField("avatar")
+    @Nullable
     private byte[] avatar;
 
     @TableField("delete_flag")

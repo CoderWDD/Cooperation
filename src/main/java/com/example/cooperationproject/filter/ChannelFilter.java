@@ -25,14 +25,11 @@ public class ChannelFilter implements Filter {
         try {
             ServletRequest requestWrapper = null;
             if (request instanceof HttpServletRequest) {
-                System.out.println("11111111");
                 requestWrapper = new RequestWrapper((HttpServletRequest) request);
             }
             if (requestWrapper == null) {
-                System.out.println("22222222");
                 chain.doFilter(request, response);
             } else {
-                System.out.println("44444444");
                 chain.doFilter(requestWrapper, response);
             }
         } catch (IOException e) {

@@ -18,4 +18,6 @@ public interface ProjectService extends IService<Project> {
     boolean DeleteProjectById(Integer projectId,Integer userId,String username);
 
     boolean ModifyProject(NewProjectInfo project,Integer projectId,String invitationCode, String username);
+
+    boolean AddInvitationCodeToProject(Project project,String invitationCode);
 }

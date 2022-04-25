@@ -20,7 +20,7 @@ public class UidPidAuidServiceImpl extends ServiceImpl<UidPidAuidMapper, UidPidA
         wrapper.eq("user_id",uidPidAuId.getUserId());
         wrapper.eq("project_id",uidPidAuId.getProjectId());
 
-        boolean res = saveOrUpdate(uidPidAuId, wrapper);
+        boolean res = save(uidPidAuId);
 
         return res;
     }

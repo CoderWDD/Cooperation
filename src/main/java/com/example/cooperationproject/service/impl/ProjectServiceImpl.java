@@ -9,6 +9,7 @@ import com.example.cooperationproject.pojo.Project;
 import com.example.cooperationproject.mapper.ProjectMapper;
 import com.example.cooperationproject.pojo.UidPidAuId;
 import com.example.cooperationproject.service.*;
+import com.example.cooperationproject.utils.ShareCodeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
@@ -19,14 +20,20 @@ import java.util.Objects;
 @Service
 public class ProjectServiceImpl extends ServiceImpl<ProjectMapper, Project> implements ProjectService {
 
-    @Autowired
-    private ItemService itemService;
+    final
+    UserService userService;
+    private final ItemService itemService;
 
-    @Autowired
-    private UidPidService uidPidService;
+    private final UidPidService uidPidService;
 
-    @Autowired
-    private UidPidAuidService uidPidAuidService;
+    private final UidPidAuidService uidPidAuidService;
+
+    public ProjectServiceImpl(UserService userService, ItemService itemService, UidPidService uidPidService, UidPidAuidService uidPidAuidService) {
+        this.userService = userService;
+        this.itemService = itemService;
+        this.uidPidService = uidPidService;
+        this.uidPidAuidService = uidPidAuidService;
+    }
 
     @Override
     public boolean CreateProject(Project project,Integer userId) {
@@ -44,6 +51,19 @@ public class ProjectServiceImpl extends ServiceImpl<ProjectMapper, Project> impl
         }
 
         int projectId = projectFound.getProjectId();
+
+        String invitationCode = ShareCodeUtils.idToCode((long) projectId);
+        projectFound.setInvitationCode(invitationCode);
+
+        boolean addInvitationCodeToProject = AddInvitationCodeToProject(projectFound, invitationCode);
+
+        // 如果邀请码插入不成功
+        if (!addInvitationCodeToProject){
+            // 到这一步了，说明在项目表中插入成功了，需要将插入项目表中的数据删除
+            removeById(projectId);
+            return false;
+        }
+
 
         boolean insertSuccessful = uidPidService.InsertByUidPid(userId, projectId);
 
@@ -164,5 +184,13 @@ public class ProjectServiceImpl extends ServiceImpl<ProjectMapper, Project> impl
         boolean updateSuccessful = updateById(project);
 
         return updateSuccessful;
+    }
+
+    @Override
+    public boolean AddInvitationCodeToProject(Project project, String invitationCode) {
+        project.setInvitationCode(invitationCode);
+        QueryWrapper<Project> wrapper = new QueryWrapper<>();
+        wrapper.eq("project_id",project.getProjectId());
+        return update(project, wrapper);
     }
 }

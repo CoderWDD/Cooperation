@@ -41,6 +41,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
             String encodePassword = passwordEncoder.encode(user.getPassword());
             user.setPassword(encodePassword);
+
             boolean res = save(user);
             return res;
         }
@@ -142,8 +143,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         QueryWrapper<User> wrapper = new QueryWrapper<>();
         wrapper.eq("user_name",username);
         User user = getOne(wrapper);
-
-        System.out.println("wqeqweqweqweqweqweqweqweqweqweqweqwe");
 
         // 如果用户不在数据库，则抛出异常
         if (Objects.isNull(user) || StringUtils.isNullOrEmpty(user.getUserName())){
