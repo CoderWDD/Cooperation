@@ -8,6 +8,8 @@ import com.example.cooperationproject.mapper.UidPidAuidMapper;
 import com.example.cooperationproject.service.UidPidAuidService;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
+
 @Service
 public class UidPidAuidServiceImpl extends ServiceImpl<UidPidAuidMapper, UidPidAuId> implements UidPidAuidService {
 
@@ -19,6 +21,13 @@ public class UidPidAuidServiceImpl extends ServiceImpl<UidPidAuidMapper, UidPidA
         wrapper.eq("au_id",uidPidAuId.getAuId());
         wrapper.eq("user_id",uidPidAuId.getUserId());
         wrapper.eq("project_id",uidPidAuId.getProjectId());
+
+        UidPidAuId one = getOne(wrapper);
+
+        if (!Objects.isNull(one)){
+            // 如果已经存在，就直接返回
+            return false;
+        }
 
         boolean res = save(uidPidAuId);
 

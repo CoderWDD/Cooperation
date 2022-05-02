@@ -63,13 +63,21 @@ public class JoinProjectController {
 
         boolean insert = uidPidService.InsertByUidPid(userId, project.getProjectId());
 
+        if (!insert) {
+            return ResultUtil.error(StatusCode.BadRequest,"加入失败！");
+        }
+
         // 被邀请进了项目，还需要将其权限写入数据库
 
         // 默认被邀请进去都是管理员
         UidPidAuId uidPidAuId = new UidPidAuId(userId, project.getProjectId(), ConstantFiledUtil.ADMIN_ID);
         boolean auInsert = uidPidAuidService.InsertUidPidAuid(uidPidAuId);
 
-        // 将加入的项目里的任务的权限给当前账号
+        if (!auInsert){
+            return ResultUtil.error(StatusCode.BadRequest,"加入失败！");
+        }
+
+        // 将加入的项目里的items的权限给当前账号
 
         List<TaskItem> taskItems = taskItemService.GetTaskItemListByProjectId(project.getProjectId());
 

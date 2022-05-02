@@ -8,6 +8,7 @@ import com.example.cooperationproject.service.UidPidService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 
 @Service
@@ -15,6 +16,20 @@ public class UidPidServiceImpl extends ServiceImpl<UidPidMapper, UidPid> impleme
     @Override
     public boolean InsertByUidPid(Integer Uid, Integer Pid) {
         UidPid uidPid = new UidPid(Uid,Pid);
+
+        // 判断当前表中是否已经有uid-pid这对权限
+
+        QueryWrapper<UidPid> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("user_id",Uid);
+        queryWrapper.eq("project_id",Pid);
+
+        UidPid one = getOne(queryWrapper);
+
+        if (!Objects.isNull(one)){
+            // 如果已经存在，就直接返回
+            return false;
+        }
+
         boolean saveSuccessful = save(uidPid);
         return saveSuccessful;
     }
