@@ -53,7 +53,7 @@ public class CreateProjectController {
 
         // 设置项目的基本信息
         project.setAuthor(username);
-        project.setStatus("未完成");
+        project.setStatus("todo");
         boolean isCreated = projectService.CreateProject(project,userId);
         if (isCreated){
             return ResultUtil.success("项目创建成功！");

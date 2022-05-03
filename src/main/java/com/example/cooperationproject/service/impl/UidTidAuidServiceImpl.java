@@ -9,21 +9,25 @@ import com.example.cooperationproject.service.UidTidAuidService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class UidTidAuidServiceImpl extends ServiceImpl<UidTidAuidMapper, UidTidAuid> implements UidTidAuidService {
 
     @Override
     public boolean InsertUidTidAuid(UidTidAuid uidTidAuid) {
-        UpdateWrapper<UidTidAuid> wrapper = new UpdateWrapper<>();
+        QueryWrapper<UidTidAuid> wrapper = new QueryWrapper<>();
 
         wrapper.eq("user_id",uidTidAuid.getUserId());
         wrapper.eq("item_id",uidTidAuid.getItemId());
-        wrapper.eq("au_id",uidTidAuid.getAuId());
 
-        boolean res = saveOrUpdate(uidTidAuid, wrapper);
+        UidTidAuid one = getOne(wrapper);
 
-        return res;
+        if (!Objects.isNull(one)){
+            return false;
+        }
+
+        return save(uidTidAuid);
     }
 
     @Override

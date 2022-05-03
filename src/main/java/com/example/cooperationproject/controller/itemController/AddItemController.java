@@ -84,7 +84,7 @@ public class AddItemController {
             return ResultUtil.error(StatusCode.BadRequest,"任务信息已存在！");
         }
 
-        taskItem.setStatus("未完成");
+        taskItem.setStatus("todo");
 
         List<UidPid> uidPidList = uidPidService.GetPidListByUid(userId);
 
