@@ -3,10 +3,12 @@ package com.example.cooperationproject.controller.itemController;
 
 import com.example.cooperationproject.pojo.TaskItem;
 import com.example.cooperationproject.service.ItemService;
+import com.example.cooperationproject.service.TaskItemService;
 import com.example.cooperationproject.utils.MyJwtUtil;
 import com.example.cooperationproject.utils.ResultUtil;
 import com.example.cooperationproject.utils.result.Message;
 import com.example.cooperationproject.utils.result.StatusCode;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;

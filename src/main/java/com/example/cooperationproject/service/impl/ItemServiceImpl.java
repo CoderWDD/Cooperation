@@ -4,11 +4,13 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.cooperationproject.constant.ConstantFiledUtil;
 import com.example.cooperationproject.entity.NewTaskItem;
+import com.example.cooperationproject.pojo.Project;
 import com.example.cooperationproject.pojo.TaskItem;
 import com.example.cooperationproject.mapper.TaskItemMapper;
 import com.example.cooperationproject.pojo.UidTidAuid;
 import com.example.cooperationproject.pojo.User;
 import com.example.cooperationproject.service.ItemService;
+import com.example.cooperationproject.service.ProjectService;
 import com.example.cooperationproject.service.UidTidAuidService;
 import com.example.cooperationproject.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -118,8 +120,6 @@ public class ItemServiceImpl extends ServiceImpl<TaskItemMapper, TaskItem> imple
 
             User newUser = userService.FindUserByUsername(newTaskItem.getExecutor());
 
-
-
             UidTidAuid uidTidAuid = new UidTidAuid(newUser.getUserId(),itemId, ConstantFiledUtil.ADMIN_ID);
 
             uidTidAuidService.InsertUidTidAuid(uidTidAuid);
@@ -148,8 +148,9 @@ public class ItemServiceImpl extends ServiceImpl<TaskItemMapper, TaskItem> imple
     @Override
     public List<TaskItem> GetItemListByUsername(String username) {
         QueryWrapper<TaskItem> wrapper = new QueryWrapper<>();
-        wrapper.eq("author",username);
+        wrapper.eq("executor",username);
         List<TaskItem> taskItemList = list(wrapper);
+
         return taskItemList;
     }
 }

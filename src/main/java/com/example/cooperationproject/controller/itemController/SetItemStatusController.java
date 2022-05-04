@@ -47,7 +47,7 @@ public class SetItemStatusController {
         TaskItem taskItem = itemService.FindItemById(itemId);
 
         if (!Objects.isNull(taskItem)){
-            NewTaskItem newTaskItem = new NewTaskItem(taskItem);
+            NewTaskItem newTaskItem = new NewTaskItem();
             newTaskItem.setStatus(itemStatus);
             boolean modifyItemInfo = itemService.ModifyItemInfo(taskItem.getExecutor(),taskItem.getItemId(),newTaskItem);
 

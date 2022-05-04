@@ -10,14 +10,6 @@ import java.util.Date;
 @Data
 public class NewTaskItem {
 
-    public NewTaskItem(TaskItem taskItem){
-        this.status = taskItem.getStatus();
-        this.itemName = taskItem.getItemName();
-        this.itemTime = taskItem.getItemTime();
-        this.description = taskItem.getDescription();
-        this.executor = taskItem.getExecutor();
-    }
-
     private String status;
 
     private String executor;
