@@ -95,6 +95,24 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     }
 
     @Override
+    public boolean ModifyPassword(String password,String username) {
+        QueryWrapper<User> wrapper = new QueryWrapper<>();
+        wrapper.eq("user_name",username);
+
+        User user = getOne(wrapper);
+
+        if (user == null){
+            return false;
+        }
+
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String encodePassword = passwordEncoder.encode(password);
+        user.setPassword(encodePassword);
+
+        return updateById(user);
+    }
+
+    @Override
     public boolean DeleteUserByUsername(String username) {
 
         // TODO : 将对应userid下的project和item删除

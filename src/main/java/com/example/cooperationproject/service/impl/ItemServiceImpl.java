@@ -68,23 +68,6 @@ public class ItemServiceImpl extends ServiceImpl<TaskItemMapper, TaskItem> imple
     }
 
 
-//    @Override
-//    public boolean IsItemExciting(Integer taskItemId, String itemName, String author, Integer projectId,String username) {
-//        TaskItem findItemByIdRes = FindItemById(taskItemId);
-//
-//        if (!Objects.isNull(findItemByIdRes)){
-//            // 如果任务id已经存在
-//            return true;
-//        }
-//
-//        TaskItem findItemByNameRes = FindItemByName(itemName, username, projectId);
-//
-//        if (!Objects.isNull(findItemByNameRes)){
-//            return true;
-//        }
-//        return false;
-//    }
-
     @Override
     public boolean DeleteItemById(Integer userId,Integer taskItemId) {
 

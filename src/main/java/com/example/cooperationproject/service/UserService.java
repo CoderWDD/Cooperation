@@ -10,6 +10,8 @@ public interface UserService extends IService<User>, UserDetailsService {
 
     boolean ModifyInfo(User user);
 
+    boolean ModifyPassword(String password,String username);
+
     boolean DeleteUserByUsername(String username);
 
     boolean DeleteUserByUserId(Integer userId);
