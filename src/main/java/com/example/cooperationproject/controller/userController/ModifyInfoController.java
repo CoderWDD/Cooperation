@@ -8,10 +8,7 @@ import com.example.cooperationproject.utils.result.Message;
 import com.example.cooperationproject.utils.result.StatusCode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -40,7 +37,11 @@ public class ModifyInfoController {
     public Message modifyInfo(@RequestBody User user){
         String token = request.getHeader("token");
         int userId = myJwtUtil.getUserIdFromToken(token);
+        String username = myJwtUtil.getUsernameFromToken(token);
+        String password = myJwtUtil.getPasswordFromToken(token);
         user.setUserId(userId);
+        user.setPassword(password);
+        user.setUserName(username);
         boolean res = userService.ModifyInfo(user);
         if (res){
             // 如果修改成功
@@ -50,8 +51,8 @@ public class ModifyInfoController {
     }
 
     @ResponseBody
-    @PostMapping("/user/password")
-    public Message modifyPassword(@RequestBody String password){
+    @PostMapping("/user/password/{password}")
+    public Message modifyPassword(@PathVariable(value = "password") String password){
         String token = request.getHeader("token");
         String username = myJwtUtil.getUsernameFromToken(token);
 
