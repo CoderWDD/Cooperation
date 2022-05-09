@@ -53,4 +53,7 @@ public class TaskItem implements Serializable {
     @TableField("project_name")
     private String projectName;
 
+    @TableField("priority")
+    private int priority;
+
 }

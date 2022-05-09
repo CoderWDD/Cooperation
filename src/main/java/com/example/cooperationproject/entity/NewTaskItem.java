@@ -1,5 +1,6 @@
 package com.example.cooperationproject.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.example.cooperationproject.pojo.TaskItem;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
@@ -21,4 +22,6 @@ public class NewTaskItem {
     private Date itemTime;
 
     private String description;
+
+    private int priority;
 }

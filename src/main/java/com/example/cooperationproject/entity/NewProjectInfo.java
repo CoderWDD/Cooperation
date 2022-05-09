@@ -21,4 +21,6 @@ public class NewProjectInfo {
 
     private String description;
 
+    private int priority;
+
 }

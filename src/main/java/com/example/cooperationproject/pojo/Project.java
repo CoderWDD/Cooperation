@@ -45,6 +45,9 @@ public class Project implements Serializable {
     @TableField("author")
     private String author;
 
+    @TableField("priority")
+    private int priority;
+
     @TableField(exist = false)
     private List<String> cooperators;
 }

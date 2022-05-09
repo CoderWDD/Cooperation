@@ -75,10 +75,9 @@ public class ProjectServiceImpl extends ServiceImpl<ProjectMapper, Project> impl
         }
 
         UidPidAuId uidPidAuId = new UidPidAuId(userId,projectId, ConstantFiledUtil.AUTHOR_ID);
-        boolean uidPidAuid = uidPidAuidService.InsertUidPidAuid(uidPidAuId);
 
         // 能运行到了，说明一定成功了
-        return saveSuccessful && insertSuccessful && uidPidAuid;
+        return uidPidAuidService.InsertUidPidAuid(uidPidAuId);
     }
 
     @Override
@@ -86,9 +85,7 @@ public class ProjectServiceImpl extends ServiceImpl<ProjectMapper, Project> impl
         QueryWrapper<Project> wrapper = new QueryWrapper<>();
         wrapper.eq("project_name",projectName);
 
-        Project projectFound = getOne(wrapper);
-
-        return projectFound;
+        return getOne(wrapper);
     }
 
     @Override
@@ -96,9 +93,7 @@ public class ProjectServiceImpl extends ServiceImpl<ProjectMapper, Project> impl
         QueryWrapper<Project> wrapper = new QueryWrapper<>();
         wrapper.eq("project_id",projectId);
 
-        Project projectFound = getOne(wrapper);
-
-        return projectFound;
+        return getOne(wrapper);
     }
 
     @Override
@@ -107,9 +102,7 @@ public class ProjectServiceImpl extends ServiceImpl<ProjectMapper, Project> impl
 
         wrapper.eq("invitation_code",invitationCode);
 
-        Project project = getOne(wrapper);
-
-        return project;
+        return getOne(wrapper);
     }
 
     @Override
@@ -180,10 +173,9 @@ public class ProjectServiceImpl extends ServiceImpl<ProjectMapper, Project> impl
         project.setDescription(newProjectInfo.getDescription());
         project.setInvitationCode(invitationCode);
         project.setStatus(newProjectInfo.getStatus());
+        project.setPriority(newProjectInfo.getPriority());
 
-        boolean updateSuccessful = updateById(project);
-
-        return updateSuccessful;
+        return updateById(project);
     }
 
     @Override

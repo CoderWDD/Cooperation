@@ -49,9 +49,7 @@ public class ItemServiceImpl extends ServiceImpl<TaskItemMapper, TaskItem> imple
         QueryWrapper<TaskItem> wrapper = new QueryWrapper<>();
         wrapper.eq("item_id",taskItemId);
 
-        TaskItem taskItem = getOne(wrapper);
-
-        return taskItem;
+        return getOne(wrapper);
     }
 
     @Override
@@ -62,9 +60,7 @@ public class ItemServiceImpl extends ServiceImpl<TaskItemMapper, TaskItem> imple
         wrapper.eq("author",author);
         wrapper.eq("project_id",projectId);
 
-        TaskItem taskItem = getOne(wrapper);
-
-        return taskItem;
+        return getOne(wrapper);
     }
 
 
@@ -114,26 +110,23 @@ public class ItemServiceImpl extends ServiceImpl<TaskItemMapper, TaskItem> imple
         taskItem.setDescription(newTaskItem.getDescription());
         taskItem.setItemTime(newTaskItem.getItemTime());
         taskItem.setItemName(newTaskItem.getItemName());
+        taskItem.setPriority(newTaskItem.getPriority());
 
-        boolean updateById = updateById(taskItem);
-
-        return updateById;
+        return updateById(taskItem);
     }
 
     @Override
     public List<TaskItem> GetItemListByProjectId(Integer projectId) {
         QueryWrapper<TaskItem> wrapper = new QueryWrapper<>();
         wrapper.eq("project_id",projectId);
-        List<TaskItem> taskItemList = list(wrapper);
-        return taskItemList;
+        return list(wrapper);
     }
 
     @Override
     public List<TaskItem> GetItemListByUsername(String username) {
         QueryWrapper<TaskItem> wrapper = new QueryWrapper<>();
         wrapper.eq("executor",username);
-        List<TaskItem> taskItemList = list(wrapper);
 
-        return taskItemList;
+        return list(wrapper);
     }
 }
