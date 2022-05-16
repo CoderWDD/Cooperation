@@ -1,6 +1,7 @@
 package com.example.cooperationproject.controller.itemController;
 
 
+import com.example.cooperationproject.pojo.TaskItem;
 import com.example.cooperationproject.service.ItemService;
 import com.example.cooperationproject.service.UidTidAuidService;
 import com.example.cooperationproject.utils.MyJwtUtil;
@@ -42,6 +43,14 @@ public class DeleteItemController {
     public Message deleteItem(@PathVariable Integer itemId){
         String token = request.getHeader("token");
         int userId = myJwtUtil.getUserIdFromToken(token);
+        String username = myJwtUtil.getUsernameFromToken(token);
+
+        TaskItem taskItem = itemService.FindItemById(itemId);
+
+        if (!taskItem.getAuthor().equals(username)){
+            return ResultUtil.error(StatusCode.Forbidden,"权限不够！");
+        }
+
         boolean deleteItemById = itemService.DeleteItemById(userId,itemId);
 
         if (deleteItemById){

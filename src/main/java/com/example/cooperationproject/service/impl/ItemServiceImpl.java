@@ -125,7 +125,7 @@ public class ItemServiceImpl extends ServiceImpl<TaskItemMapper, TaskItem> imple
     @Override
     public List<TaskItem> GetItemListByUsername(String username) {
         QueryWrapper<TaskItem> wrapper = new QueryWrapper<>();
-        wrapper.eq("executor",username);
+        wrapper.eq("executor",username).or().eq("author",username);
 
         return list(wrapper);
     }

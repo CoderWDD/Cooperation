@@ -15,10 +15,15 @@ import java.util.List;
 @Service
 public class TaskItemServiceImpl extends ServiceImpl<TaskItemMapper, TaskItem> implements TaskItemService {
 
+    /**
+     * 获取为executor、creator角色的itemList
+     * @param username
+     * @return
+     */
     @Override
     public List<TaskItem> GetTaskItemListByUsername(String username) {
         QueryWrapper<TaskItem> wrapper = new QueryWrapper<>();
-        wrapper.eq("executor",username);
+        wrapper.eq("executor",username).or().eq("author",username);
         return list(wrapper);
     }
 
