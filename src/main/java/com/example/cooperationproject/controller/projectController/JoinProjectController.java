@@ -53,12 +53,17 @@ public class JoinProjectController {
     @PostMapping("/project/joinProject/{invitationCode}")
     public Message joinProject(@PathVariable(value = "invitationCode") String invitationCode){
         Project project = projectService.FindProjectByInvitationCode(invitationCode);
+        String token = request.getHeader("token");
+        String username = myJwtUtil.getUsernameFromToken(token);
 
         if (Objects.isNull(project)){
             return ResultUtil.error(StatusCode.BadRequest,"邀请码出错！");
         }
 
-        String token = request.getHeader("token");
+        if (username.equals(project.getAuthor()) || project.getCooperators().contains(username)){
+            return ResultUtil.error(StatusCode.BadRequest,"你已经是该Project的成员！");
+        }
+
         int userId = myJwtUtil.getUserIdFromToken(token);
 
         boolean insert = uidPidService.InsertByUidPid(userId, project.getProjectId());
