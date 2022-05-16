@@ -100,7 +100,6 @@ public class ProjectServiceImpl extends ServiceImpl<ProjectMapper, Project> impl
     public Project FindProjectByInvitationCode(String invitationCode) {
         QueryWrapper<Project> wrapper = new QueryWrapper<>();
         wrapper.eq("invitation_code",invitationCode);
-        wrapper.ne();
         return getOne(wrapper);
     }
 
