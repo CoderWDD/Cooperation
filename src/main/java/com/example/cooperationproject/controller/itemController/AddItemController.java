@@ -75,10 +75,11 @@ public class AddItemController {
             if (Objects.isNull(executor)){
                 return ResultUtil.error(StatusCode.BadRequest,"执行人信息错误！");
             }
+
             executorId = executor.getUserId();
         }
 
-        TaskItem item = itemService.FindItemByName(taskItem.getItemName(), taskItem.getAuthor(), taskItem.getProjectId());
+        TaskItem item = itemService.FindItemByName(taskItem.getItemName(), taskItem.getExecutor(), taskItem.getProjectId());
 
         if (!Objects.isNull(item)){
             return ResultUtil.error(StatusCode.BadRequest,"任务信息已存在！");

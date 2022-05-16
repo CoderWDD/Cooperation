@@ -53,11 +53,11 @@ public class ItemServiceImpl extends ServiceImpl<TaskItemMapper, TaskItem> imple
     }
 
     @Override
-    public TaskItem FindItemByName(String itemName, String author, Integer projectId) {
+    public TaskItem FindItemByName(String itemName, String executor, Integer projectId) {
         QueryWrapper<TaskItem> wrapper = new QueryWrapper<>();
 
         wrapper.eq("item_name",itemName);
-        wrapper.eq("author",author);
+        wrapper.eq("executor",executor);
         wrapper.eq("project_id",projectId);
 
         return getOne(wrapper);
