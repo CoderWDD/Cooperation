@@ -1,5 +1,6 @@
 package com.example.cooperationproject.controller.userController;
 
+import com.example.cooperationproject.entity.NewAvatar;
 import com.example.cooperationproject.pojo.User;
 import com.example.cooperationproject.service.UserService;
 import com.example.cooperationproject.utils.MyJwtUtil;
@@ -58,6 +59,20 @@ public class ModifyInfoController {
             return ResultUtil.success("密码修改成功！");
         }
         return ResultUtil.error(StatusCode.BadRequest,"密码修改失败！");
+    }
+
+    @ResponseBody
+    @PostMapping("/user/avatar/upload")
+    public Message uploadAvatar(@RequestBody byte[] avatar){
+        String token = request.getHeader("token");
+        int userId = myJwtUtil.getUserIdFromToken(token);
+
+        boolean res = userService.UploadAvatar(avatar, userId);
+        if (res){
+            // 如果修改成功
+            return ResultUtil.success("用户信息修改成功！");
+        }
+        return ResultUtil.error(StatusCode.BadRequest,"更好头像失败！");
     }
 
 }

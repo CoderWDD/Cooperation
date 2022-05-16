@@ -19,4 +19,6 @@ public interface UserService extends IService<User>, UserDetailsService {
     User FindUserByUsername(String username);
 
     String FindUsernameByUserId(Integer userId);
+
+    boolean UploadAvatar(byte[] newAvatar,Integer userId);
 }

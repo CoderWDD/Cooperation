@@ -43,7 +43,6 @@ public class User implements Serializable {
     @TableField("last_name")
     private String lastName;
 
-
     @TableField("department")
     private String department;
 

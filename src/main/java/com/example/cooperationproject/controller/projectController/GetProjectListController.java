@@ -73,7 +73,7 @@ public class GetProjectListController {
                     // 只获取不包括自己在内的cooperators的list
                     if (temp.getUserId() == e.getUserId())continue;
 
-                    String username = userService.FindUsernameByUserId(e.getUserId());
+                    String username = userService.FindUsernameByUserId(temp.getUserId());
                     // 只获取合作伙伴，不获取当前用户
                     if (!Objects.isNull(username) && !username.isEmpty() && !username.equals(usernameInToken)) {
                         cooperators.add(username);

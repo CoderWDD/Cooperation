@@ -144,6 +144,22 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         return user.getUserName();
     }
 
+    @Override
+    public boolean UploadAvatar(byte[] newAvatar,Integer userId) {
+        QueryWrapper<User> wrapper = new QueryWrapper<>();
+        wrapper.eq("user_id",userId);
+
+        User user = getOne(wrapper);
+
+        if (user == null){
+            return false;
+        }
+
+        user.setAvatar(newAvatar);
+
+        return updateById(user);
+    }
+
     private final AuthenticationService authenticationService;
 
     private final UidPidService uidPidService;
