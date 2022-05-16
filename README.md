@@ -14,7 +14,7 @@ A project that provices the api interface for fontend,which helps people to mana
         - 好处：自定义性高，上手无难道，基本必须功能整合
 
 # 数据表关系： 
-![image](https://user-images.githubusercontent.com/76061542/161380165-3b0735d8-90b0-4802-92db-a8290d7a82cf.png)
+![image](https://raw.githubusercontent.com/CoderWDD/myImages/main/blog_images/20220516135422.png)
 
 # 数据表创建：
   - user表：
