@@ -84,7 +84,7 @@ public class ProjectServiceImpl extends ServiceImpl<ProjectMapper, Project> impl
     public Project FindProjectByName(String projectName, String author) {
         QueryWrapper<Project> wrapper = new QueryWrapper<>();
         wrapper.eq("project_name",projectName);
-
+        wrapper.eq("author",author);
         return getOne(wrapper);
     }
 
