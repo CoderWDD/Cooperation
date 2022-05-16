@@ -1,6 +1,7 @@
 package com.example.cooperationproject.controller.projectController;
 
 
+import com.example.cooperationproject.pojo.Project;
 import com.example.cooperationproject.service.ProjectService;
 import com.example.cooperationproject.service.UidPidAuidService;
 import com.example.cooperationproject.utils.MyJwtUtil;
@@ -42,6 +43,13 @@ public class DeleteProjectController {
         String token = request.getHeader("token");
         int userId = myJwtUtil.getUserIdFromToken(token);
         String username = myJwtUtil.getUsernameFromToken(token);
+
+        Project project = projectService.FindProjectById(projectId);
+
+        // 只有创建者，才能删除project
+        if (!project.getAuthor().equals(username)){
+            return ResultUtil.error(StatusCode.Forbidden,"权限不够！");
+        }
 
         boolean deleteSuccessful = projectService.DeleteProjectById(projectId, userId, username);
 

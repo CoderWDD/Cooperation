@@ -52,6 +52,12 @@ public class ModifyProjectController {
             return ResultUtil.error(StatusCode.BadRequest,"项目ID不存在！");
         }
 
+        // 只有创建者，才能修改project info
+        if (!projectById.getAuthor().equals(username)){
+            return ResultUtil.error(StatusCode.Forbidden,"权限不够！");
+        }
+
+
         // 到这里，说明项目一定是存在的
         boolean modifyProjectSuccessful = projectService.ModifyProject(newProjectInfo,projectId,projectById.getInvitationCode(), username);
         if (modifyProjectSuccessful){
