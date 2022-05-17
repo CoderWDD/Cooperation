@@ -54,7 +54,7 @@ public class JoinProjectController {
     @ResponseBody
     @PostMapping("/project/joinProject/{invitationCode}")
     public Message joinProject(@PathVariable(value = "invitationCode") String invitationCode){
-        Project project = projectService.FindProjectByInvitationCode(invitationCode);
+        Project project = projectService.FindProjectByInvitationCode(invitationCode.toUpperCase());
         String token = request.getHeader("token");
         String username = myJwtUtil.getUsernameFromToken(token);
 
