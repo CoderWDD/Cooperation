@@ -2,19 +2,14 @@ package com.example.cooperationproject.controller.itemController;
 
 
 import com.example.cooperationproject.constant.ConstantFiledUtil;
-import com.example.cooperationproject.pojo.TaskItem;
-import com.example.cooperationproject.pojo.UidPid;
-import com.example.cooperationproject.pojo.UidTidAuid;
-import com.example.cooperationproject.pojo.User;
-import com.example.cooperationproject.service.ItemService;
-import com.example.cooperationproject.service.UidPidService;
-import com.example.cooperationproject.service.UidTidAuidService;
-import com.example.cooperationproject.service.UserService;
+import com.example.cooperationproject.pojo.*;
+import com.example.cooperationproject.service.*;
 import com.example.cooperationproject.utils.MyJwtUtil;
 import com.example.cooperationproject.utils.ResultUtil;
 import com.example.cooperationproject.utils.result.Message;
 import com.example.cooperationproject.utils.result.StatusCode;
 import com.mysql.cj.util.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -39,13 +34,16 @@ public class AddItemController {
 
     private final UserService userService;
 
-    public AddItemController(HttpServletRequest request, MyJwtUtil myJwtUtil, ItemService itemService, UidPidService uidPidService, UidTidAuidService uidTidAuidService, UserService userService) {
+    private final ProjectService projectService;
+
+    public AddItemController(HttpServletRequest request, MyJwtUtil myJwtUtil, ItemService itemService, UidPidService uidPidService, UidTidAuidService uidTidAuidService, UserService userService, ProjectService projectService) {
         this.request = request;
         this.myJwtUtil = myJwtUtil;
         this.itemService = itemService;
         this.uidPidService = uidPidService;
         this.uidTidAuidService = uidTidAuidService;
         this.userService = userService;
+        this.projectService = projectService;
     }
 
     /**
@@ -60,6 +58,17 @@ public class AddItemController {
         String token = request.getHeader("token");
         int userId = myJwtUtil.getUserIdFromToken(token);
         String username = myJwtUtil.getUsernameFromToken(token);
+
+        Project project = projectService.FindProjectById(taskItem.getProjectId());
+
+        if (project == null){
+            return ResultUtil.error(StatusCode.BadRequest,"项目信息错误！");
+        }
+
+        // 只有项目的创建者，可以给别人添加任务
+        if (!taskItem.getAuthor().equals(taskItem.getExecutor()) && !project.getAuthor().equals(taskItem.getExecutor())){
+            return ResultUtil.error(StatusCode.BadRequest,"权限不够！");
+        }
 
         // 设置任务的创建者为当前用户
         taskItem.setAuthor(username);

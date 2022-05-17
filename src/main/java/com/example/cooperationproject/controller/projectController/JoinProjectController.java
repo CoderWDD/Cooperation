@@ -1,27 +1,25 @@
 package com.example.cooperationproject.controller.projectController;
 
 import com.example.cooperationproject.constant.ConstantFiledUtil;
-import com.example.cooperationproject.pojo.Project;
-import com.example.cooperationproject.pojo.TaskItem;
-import com.example.cooperationproject.pojo.UidPidAuId;
-import com.example.cooperationproject.pojo.UidTidAuid;
+import com.example.cooperationproject.pojo.*;
 import com.example.cooperationproject.service.*;
 import com.example.cooperationproject.utils.MyJwtUtil;
 import com.example.cooperationproject.utils.ResultUtil;
 import com.example.cooperationproject.utils.result.Message;
 import com.example.cooperationproject.utils.result.StatusCode;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 @RestController
 public class JoinProjectController {
 
-    @Autowired
-    private TaskItemService taskItemService;
+    private final TaskItemService taskItemService;
 
     private final UidTidAuidService uidTidAuidService;
 
@@ -35,13 +33,17 @@ public class JoinProjectController {
 
     private final MyJwtUtil myJwtUtil;
 
-    public JoinProjectController(UidPidService uidPidService, ProjectService projectService, HttpServletRequest request, MyJwtUtil myJwtUtil, UidPidAuidService uidPidAuidService, UidTidAuidService uidTidAuidService) {
+    private final UserService userService;
+
+    public JoinProjectController(UidPidService uidPidService, ProjectService projectService, HttpServletRequest request, MyJwtUtil myJwtUtil, UidPidAuidService uidPidAuidService, UidTidAuidService uidTidAuidService, TaskItemService taskItemService, UserService userService) {
         this.uidPidService = uidPidService;
         this.projectService = projectService;
         this.request = request;
         this.myJwtUtil = myJwtUtil;
         this.uidPidAuidService = uidPidAuidService;
         this.uidTidAuidService = uidTidAuidService;
+        this.taskItemService = taskItemService;
+        this.userService = userService;
     }
 
     /**
@@ -60,8 +62,26 @@ public class JoinProjectController {
             return ResultUtil.error(StatusCode.BadRequest,"邀请码出错！");
         }
 
-        if (username.equals(project.getAuthor()) || project.getCooperators().contains(username)){
-            return ResultUtil.error(StatusCode.BadRequest,"你已经是该Project的成员！");
+        if (username.equals(project.getAuthor())){
+            return ResultUtil.error(StatusCode.BadRequest,"视图加入自己的项目！");
+        }
+
+        // 获取project的cooperators，并封装成list
+
+        List<UidPid> uidPidList = uidPidService.GetUidListByPid(project.getProjectId());
+
+        List<String> cooperators = new ArrayList<>();
+
+        for (UidPid temp : uidPidList){
+            String username_1 = userService.FindUsernameByUserId(temp.getUserId());
+            // 只获取合作伙伴，不获取当前用户
+            if (!Objects.isNull(username_1) && !username_1.isEmpty()) {
+                cooperators.add(username_1);
+            }
+        }
+
+        if (cooperators.contains(username)) {
+            return ResultUtil.error(StatusCode.BadRequest,"你已经是该项目的成员！");
         }
 
         int userId = myJwtUtil.getUserIdFromToken(token);
