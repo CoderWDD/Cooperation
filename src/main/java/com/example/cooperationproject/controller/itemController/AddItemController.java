@@ -10,6 +10,7 @@ import com.example.cooperationproject.utils.result.Message;
 import com.example.cooperationproject.utils.result.StatusCode;
 import com.mysql.cj.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -66,7 +67,7 @@ public class AddItemController {
         }
 
         // 只有项目的创建者，可以给别人添加任务
-        if (!taskItem.getAuthor().equals(taskItem.getExecutor()) && !project.getAuthor().equals(taskItem.getExecutor())){
+        if (!taskItem.getAuthor().equals(project.getAuthor()) && !taskItem.getAuthor().equals(taskItem.getExecutor())){
             return ResultUtil.error(StatusCode.BadRequest,"权限不够！");
         }
 
