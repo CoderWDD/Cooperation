@@ -1,0 +1,11 @@
+version: "3"
+services:
+  Cooperation:
+    container_name: CooperationCore
+    build: .
+    image: cooperation_core_image
+    ports:
+      - "3345:3345"
+    restart: always
+    environment:
+      - TZ=Asia/Shanghai

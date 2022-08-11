@@ -35,6 +35,7 @@ public class LoginUser implements Serializable, UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
+
         if (Objects.nonNull(userAuthorities)){
             return userAuthorities;
         }

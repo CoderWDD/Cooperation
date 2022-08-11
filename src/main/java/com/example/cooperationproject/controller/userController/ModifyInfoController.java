@@ -62,6 +62,25 @@ public class ModifyInfoController {
     }
 
     @ResponseBody
+    @PostMapping("/user/password/{originPassword}/{newPassword}")
+    public Message modifyPassword(@PathVariable(value = "newPassword") String newPassword,@PathVariable(value = "originPassword") String originPassword){
+        String token = request.getHeader("token");
+        String username = myJwtUtil.getUsernameFromToken(token);
+        String password = myJwtUtil.getPasswordFromToken(token);
+
+        if (!originPassword.equals(password)){
+            return ResultUtil.error(StatusCode.BadRequest,"原密码错误！");
+        }
+
+        boolean res = userService.ModifyPassword(newPassword, username);
+
+        if (res){
+            return ResultUtil.success("密码修改成功！");
+        }
+        return ResultUtil.error(StatusCode.BadRequest,"密码修改失败！");
+    }
+
+    @ResponseBody
     @PostMapping("/user/avatar/upload")
     public Message uploadAvatar(@RequestBody byte[] avatar){
         String token = request.getHeader("token");
